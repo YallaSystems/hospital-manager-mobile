@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,34 +9,18 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { RootStackParamList } from '../navigation/AppNavigator';
-import { loginRequest } from '../store/slices/authSlice';
-import type { RootState } from '../store';
+import { useLoginViewModel } from '../viewmodels/useLoginViewModel';
 
-type LoginScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
-};
-
-const LoginScreen = ({ navigation }: LoginScreenProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
-  const { loading, error, isAuthenticated } = useSelector(
-    (state: RootState) => state.auth,
-  );
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      // Using replace instead of navigate to prevent the user from returning to the Login screen after successful authentication
-      navigation.replace('Main', { screen: 'Home' });
-    }
-  }, [isAuthenticated, navigation]);
-
-  const handleLogin = () => {
-    dispatch(loginRequest({ email, password }));
-  };
+const LoginScreen = ({ navigation }) => {
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    loading,
+    error,
+    handleLogin,
+  } = useLoginViewModel(navigation);
 
   return (
     <KeyboardAvoidingView
