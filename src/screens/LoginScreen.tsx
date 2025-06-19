@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -7,9 +7,13 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigation/AppNavigator';
+import {loginRequest} from '../store/slices/authSlice';
+import type {RootState} from '../store';
 
 type LoginScreenProps = {
   navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
@@ -18,10 +22,20 @@ type LoginScreenProps = {
 const LoginScreen = ({navigation}: LoginScreenProps) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const {loading, error, isAuthenticated} = useSelector(
+    (state: RootState) => state.auth,
+  );
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      // Using replace instead of navigate to prevent the user from returning to the Login screen after successful authentication
+      navigation.replace('Home');
+    }
+  }, [isAuthenticated, navigation]);
 
   const handleLogin = () => {
-    // TODO: Implement actual login logic
-    navigation.replace('Home');
+    dispatch(loginRequest({email, password}));
   };
 
   return (
@@ -37,6 +51,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
+          editable={!loading}
         />
         <TextInput
           style={styles.input}
@@ -44,9 +59,18 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
+          editable={!loading}
         />
-        <TouchableOpacity style={styles.button} onPress={handleLogin}>
-          <Text style={styles.buttonText}>Login</Text>
+        {error && <Text style={styles.errorText}>{error}</Text>}
+        <TouchableOpacity
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleLogin}
+          disabled={loading}>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>Login</Text>
+          )}
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -86,10 +110,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 15,
   },
+  buttonDisabled: {
+    opacity: 0.7,
+  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: 10,
   },
 });
 
