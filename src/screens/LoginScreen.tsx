@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import { useLoginViewModel } from '../viewmodels/useLoginViewModel';
+import { useTranslation } from 'react-i18next';
 
 const LoginScreen = ({ navigation }) => {
   const {
@@ -21,16 +22,17 @@ const LoginScreen = ({ navigation }) => {
     error,
     handleLogin,
   } = useLoginViewModel(navigation);
+  const { t } = useTranslation();
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.title}>{t('welcomeBack')}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder={t('email')}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -39,7 +41,7 @@ const LoginScreen = ({ navigation }) => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder={t('password')}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -53,7 +55,7 @@ const LoginScreen = ({ navigation }) => {
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={styles.buttonText}>{t('login')}</Text>
           )}
         </TouchableOpacity>
       </View>
