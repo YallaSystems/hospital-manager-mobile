@@ -88,3 +88,24 @@ cd ios && fastlane release
 # For Android
 
 cd android && fastlane release
+
+📁 Folder Structure
+
+project-root/
+├── test/
+│ └── specs/
+│ └── home.e2e.js
+├── wdio.conf.js
+✍️ Sample Test (test/specs/home.e2e.js)
+
+describe('Home Screen', () => {
+it('should show welcome text', async () => {
+const welcomeText = await $('~welcomeText'); // Match testID in React Native
+await expect(welcomeText).toBeDisplayed();
+});
+});
+Make sure your app code includes:
+
+<Text testID="welcomeText">Welcome to Hospital Manager</Text>
+
+npx wdio run wdio.conf.js
