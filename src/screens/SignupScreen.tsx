@@ -7,33 +7,41 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  ActivityIndicator,
 } from 'react-native';
-import { useLoginViewModel } from '../viewmodels/useLoginViewModel';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
+import { useSignupViewModel } from '../viewmodels/useSignupViewModel';
 
-type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
+type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 
-const LoginScreen = ({ navigation }: LoginScreenProps) => {
+const SignupScreen = ({ navigation }: SignupScreenProps) => {
+  const { t } = useTranslation();
   const {
+    fullName,
+    setFullName,
     email,
     setEmail,
     password,
     setPassword,
-    loading,
-    error,
-    handleLogin,
-  } = useLoginViewModel(navigation);
-  const { t } = useTranslation();
+    confirmPassword,
+    setConfirmPassword,
+    handleSignup,
+  } = useSignupViewModel(navigation);
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>{t('welcomeBack')}</Text>
+        <Text style={styles.title}>{t('createAccount')}</Text>
+        <TextInput
+          style={styles.input}
+          placeholder={t('fullName')}
+          value={fullName}
+          onChangeText={setFullName}
+          autoCapitalize="none"
+        />
         <TextInput
           style={styles.input}
           placeholder={t('email')}
@@ -41,7 +49,6 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           onChangeText={setEmail}
           keyboardType="email-address"
           autoCapitalize="none"
-          editable={!loading}
         />
         <TextInput
           style={styles.input}
@@ -49,24 +56,18 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           value={password}
           onChangeText={setPassword}
           secureTextEntry
-          editable={!loading}
           textContentType="none"
         />
-        {error && <Text style={styles.errorText}>{error}</Text>}
-        <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
-          onPress={handleLogin}
-          disabled={loading}>
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>{t('login')}</Text>
-          )}
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.signupButton}
-          onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signupButtonText}>{t('dontHaveAccount')}{' '}<Text style={styles.signupLink}>{t('signup')}</Text></Text>
+        <TextInput
+          style={styles.input}
+          placeholder={t('confirmPassword')}
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry
+          textContentType="none"
+        />
+        <TouchableOpacity style={styles.button} onPress={handleSignup}>
+          <Text style={styles.buttonText}>{t('signup')}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -106,31 +107,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 15,
   },
-  buttonDisabled: {
-    opacity: 0.7,
-  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  errorText: {
-    color: 'red',
-    textAlign: 'center',
-    marginBottom: 10,
-  },
-  signupButton: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  signupButtonText: {
-    fontSize: 16,
-    color: '#555',
-  },
-  signupLink: {
-    color: '#f4511e',
-    fontWeight: 'bold',
-  },
 });
 
-export default LoginScreen; 
+export default SignupScreen; 
