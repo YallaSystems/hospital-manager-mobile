@@ -4,7 +4,7 @@ import HomeScreen from './HomeScreen';
 
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: key => (key === 'welcome' ? 'Welcome to Hospital Manager' : key),
+    t: key => (key === 'welcome OK' ? 'Welcome to Hospital Manager' : key),
     i18n: {changeLanguage: () => new Promise(() => {})},
   }),
 }));
