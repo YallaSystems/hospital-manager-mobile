@@ -11,6 +11,7 @@ import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react';
 import AppNavigator from './src/navigation/AppNavigator';
 import {store, persistor} from './src/store';
+import './src/i18n';
 
 function App(): React.JSX.Element {
   return (

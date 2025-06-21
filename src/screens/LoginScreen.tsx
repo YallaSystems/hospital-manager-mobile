@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {
   View,
   Text,
@@ -9,44 +9,30 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import type {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import {RootStackParamList} from '../navigation/AppNavigator';
-import {loginRequest} from '../store/slices/authSlice';
-import type {RootState} from '../store';
+import { useLoginViewModel } from '../viewmodels/useLoginViewModel';
+import { useTranslation } from 'react-i18next';
 
-type LoginScreenProps = {
-  navigation: NativeStackNavigationProp<RootStackParamList, 'Login'>;
-};
-
-const LoginScreen = ({navigation}: LoginScreenProps) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const dispatch = useDispatch();
-  const {loading, error, isAuthenticated} = useSelector(
-    (state: RootState) => state.auth,
-  );
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      // Using replace instead of navigate to prevent the user from returning to the Login screen after successful authentication
-      navigation.replace('Home');
-    }
-  }, [isAuthenticated, navigation]);
-
-  const handleLogin = () => {
-    dispatch(loginRequest({email, password}));
-  };
+const LoginScreen = ({ navigation }) => {
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    loading,
+    error,
+    handleLogin,
+  } = useLoginViewModel(navigation);
+  const { t } = useTranslation();
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Welcome Back</Text>
+        <Text style={styles.title}>{t('welcomeBack')}</Text>
         <TextInput
           style={styles.input}
-          placeholder="Email"
+          placeholder={t('email')}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -55,7 +41,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Password"
+          placeholder={t('password')}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -69,7 +55,7 @@ const LoginScreen = ({navigation}: LoginScreenProps) => {
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>Login</Text>
+            <Text style={styles.buttonText}>{t('login')}</Text>
           )}
         </TouchableOpacity>
       </View>

@@ -1,0 +1,15 @@
+{
+  "welcome": "Welcome to Hospital Manager",
+  "login": "Login",
+  "email": "Email",
+  "password": "Password",
+  "error": "An error occurred",
+  "logout": "Logout",
+  "profile": "Profile",
+  "search": "Search",
+  "appointments": "Appointments",
+  "welcomeBack": "Welcome Back",
+  "language": "Language",
+  "back": "Back",
+  "home": "Home"
+}
