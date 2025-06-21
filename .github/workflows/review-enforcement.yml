@@ -1,0 +1,49 @@
+name: Enforce Reviewer Screenshot & Comment
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  check-reviewer-feedback:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check for reviewer screenshot and comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prNumber = context.payload.pull_request.number;
+            const { owner, repo } = context.repo;
+
+            const reviews = await github.paginate(
+              github.rest.pulls.listReviews,
+              { owner, repo, pull_number: prNumber }
+            );
+
+            const comments = await github.paginate(
+              github.rest.issues.listComments,
+              { owner, repo, issue_number: prNumber }
+            );
+
+            // Collect reviewers who submitted a review
+            const reviewerUsernames = new Set(reviews.map(r => r.user.login));
+
+            // Check if any reviewer left a comment WITH image
+            let screenshotFound = false;
+            for (const comment of comments) {
+              const hasImage = /!\[.*\]\(.*\.(png|jpg|jpeg|gif)\)/i.test(comment.body);
+              if (hasImage && reviewerUsernames.has(comment.user.login)) {
+                screenshotFound = true;
+                break;
+              }
+            }
+
+            if (!screenshotFound) {
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: "⚠️ At least one reviewer must leave a comment with a screenshot/image to meet the review checklist. Please upload a screenshot and describe what was tested."
+              });
+            }
