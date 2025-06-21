@@ -1,47 +1,29 @@
-# Pull Request
+## Pull Request Title
+The title should succinctly explain the changes. For example, "Add search functionality to the homepage".
 
 ## Description
+Provide a brief description of the changes your pull request makes. Explain the problem it solves or the feature it adds to the project. Include any relevant issue numbers.
 
-Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context.
-
-Fixes # (issue)
-
-## Type of change
-
-Please delete options that are not relevant.
-
+## Type of Change
 - [ ] Bug fix (non-breaking change which fixes an issue)
 - [ ] New feature (non-breaking change which adds functionality)
 - [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] Documentation update
+- [ ] This change requires a documentation update
 
 ## How Has This Been Tested?
-
-Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce.
-
-- [ ] Test A
-- [ ] Test B
+Describe how you have tested these changes. Include details of your testing environment, tests ran to see how your change affects other areas of the code, etc.
 
 ## Checklist:
+- [ ] I have read the [CONTRIBUTING](LINK_TO_CONTRIBUTING.MD) document.
+- [ ] My code follows the code style of this project.
+- [ ] I have added or updated the tests to cover my changes.
+- [ ] I have checked that my changes do not introduce any breaking changes.
+- [ ] I have updated the documentation accordingly (if necessary).
+- [ ] I have commented my code, particularly in hard-to-understand areas.
+- [ ] I have made corresponding changes to the documentation (if applicable).
 
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have commented my code, particularly in hard-to-understand areas
-- [ ] I have made corresponding changes to the documentation
-- [ ] My changes generate no new warnings
-- [ ] I have added tests that prove my fix is effective or that my feature works
-- [ ] New and existing unit tests pass locally with my changes
+## Screenshots
+Insert any screenshots or videos (if applicable) to help explain your problem or demonstrate your changes.
 
-## ✅ Review Checklist
-
-> 🛡️ Required for Approval:
->
-> - At least 1 reviewer **must**:
->   - ✅ Upload a screenshot (image/GIF)
->   - ✅ Leave a comment explaining what was verified
-
----
-
-## 📸 Screenshots (UI Related)
-
-> Reviewer, please upload screenshot here:
+## Additional Notes
+Add any other context or notes about the pull request here. This could include necessary deployment changes, new dependencies, etc.
