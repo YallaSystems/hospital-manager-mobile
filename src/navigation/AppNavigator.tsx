@@ -12,6 +12,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import { useTranslation } from 'react-i18next';
 import SignupScreen from '../screens/SignupScreen';
 import OtpScreen from '../screens/OtpScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 // Placeholder screens if not already implemented
@@ -33,15 +34,17 @@ const AppointmentsScreen = () => {
 };
 
 /**
- * Defines the parameters for the authentication stack, including routes for Login, Signup, and OTP.
+ * Defines the parameters for the authentication stack, including routes for Login, Signup, ForgotPassword, and OTP.
  * - Login: The screen for users to enter their credentials.
  * - Signup: The screen for new users to create an account.
+ * - ForgotPassword: The screen for users to enter their email to reset password.
  * - Otp: The screen for verifying the user's identity with a one-time password.
  *        It accepts optional email and password parameters to be used in the verification process.
  */
 export type AuthStackParamList = {
   Login: undefined;
   Signup: undefined;
+  ForgotPassword: undefined;
   Otp: { email?: string; password?: string };
 };
 
@@ -133,7 +136,7 @@ const ProfileStack = () => {
 /**
  * The authentication stack navigator.
  * It groups all authentication-related screens under a single navigator.
- * This component defines the routes for login, signup, and OTP verification.
+ * This component defines the routes for login, signup, forgot password, and OTP verification.
  */
 const AuthStack = () => {
   const { t } = useTranslation();
@@ -142,12 +145,13 @@ const AuthStack = () => {
       screenOptions={({navigation})=>({
         headerShown: true,
         headerLeft: () => (
-          <Button title={t('back')} onPress={() => navigation.replace('Main', { screen: 'Home' })} />
+          <Button title={t('back')} onPress={() => navigation.goBack()} />
         ),
       })}
     >
       <AuthStackNavigator.Screen name="Login" component={LoginScreen} options={{ title: t('login') }} />
       <AuthStackNavigator.Screen name="Signup" component={SignupScreen} options={{ title: t('signup') }} />
+      <AuthStackNavigator.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: t('forgotPassword') }} />
       <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={{ title: t('otp') }} />
     </AuthStackNavigator.Navigator>
   );

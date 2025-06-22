@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -9,69 +9,86 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { useLoginViewModel } from '../viewmodels/useLoginViewModel';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 
-type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
+type ForgotPasswordScreenProps = NativeStackScreenProps<AuthStackParamList, 'ForgotPassword'>;
 
-const LoginScreen = ({ navigation }: LoginScreenProps) => {
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    loading,
-    error,
-    handleLogin,
-  } = useLoginViewModel(navigation);
+const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const { t } = useTranslation();
+
+  const handleSendResetLink = async () => {
+    if (!email.trim()) {
+      setError(t('errors.enterYourEmail'));
+      return;
+    }
+
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError(t('errors.enterValidEmail'));
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      // Here you would typically make an API call to send the reset link
+      // For now, we'll simulate the API call with a timeout
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      // Navigate to OTP screen with the email
+      navigation.navigate('Otp', { email: email.trim() });
+    } catch (err) {
+      setError(t('errors.failedToSendResetLink'));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>{t('welcomeBack')}</Text>
+        <Text style={styles.title}>{t('resetPassword')}</Text>
+        <Text style={styles.description}>{t('enterEmailForReset')}</Text>
+        
         <TextInput
           style={styles.input}
           placeholder={t('email')}
           value={email}
-          onChangeText={setEmail}
+          onChangeText={(text) => {
+            setEmail(text);
+            if (error) setError('');
+          }}
           keyboardType="email-address"
           autoCapitalize="none"
           editable={!loading}
         />
-        <TextInput
-          style={styles.input}
-          placeholder={t('password')}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          editable={!loading}
-          textContentType="none"
-        />
-        <TouchableOpacity
-          style={styles.forgotPasswordButton}
-          onPress={() => navigation.navigate('ForgotPassword')}>
-          <Text style={styles.forgotPasswordText}>{t('forgotPassword')}</Text>
-        </TouchableOpacity>
+        
         {error && <Text style={styles.errorText}>{error}</Text>}
+        
         <TouchableOpacity
           style={[styles.button, loading && styles.buttonDisabled]}
-          onPress={handleLogin}
+          onPress={handleSendResetLink}
           disabled={loading}>
           {loading ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text style={styles.buttonText}>{t('login')}</Text>
+            <Text style={styles.buttonText}>{t('sendResetLink')}</Text>
           )}
         </TouchableOpacity>
+        
         <TouchableOpacity
-          style={styles.signupButton}
-          onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signupButtonText}>{t('dontHaveAccount')}{' '}<Text style={styles.signupLink}>{t('signup')}</Text></Text>
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}>
+          <Text style={styles.backButtonText}>{t('back')}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -91,8 +108,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 30,
+    marginBottom: 15,
     textAlign: 'center',
+  },
+  description: {
+    fontSize: 16,
+    color: '#666',
+    textAlign: 'center',
+    marginBottom: 30,
+    lineHeight: 22,
   },
   input: {
     height: 50,
@@ -124,27 +148,15 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: 10,
   },
-  signupButton: {
+  backButton: {
     marginTop: 20,
     alignItems: 'center',
   },
-  signupButtonText: {
+  backButtonText: {
     fontSize: 16,
-    color: '#555',
-  },
-  signupLink: {
     color: '#f4511e',
     fontWeight: 'bold',
   },
-  forgotPasswordButton: {
-    alignSelf: 'flex-end',
-    marginBottom: 15,
-  },
-  forgotPasswordText: {
-    fontSize: 14,
-    color: '#f4511e',
-    fontWeight: '500',
-  },
 });
 
-export default LoginScreen; 
+export default ForgotPasswordScreen; 

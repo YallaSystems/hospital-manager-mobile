@@ -26,8 +26,17 @@ const OtpScreen = ({ route }: OtpScreenProps) => {
   const otpInput = useRef<TextInput>(null);
 
   const handleOtpSubmit = () => {
-    if (otp.length === 6 && email && password) {
-      dispatch(loginRequest({ email, password }));
+    if (otp.length === 6) {
+      if (email && password) {
+        // Login flow - dispatch login request
+        dispatch(loginRequest({ email, password }));
+      } else if (email) {
+        // Forgot password flow - handle password reset
+        // Here you would typically make an API call to verify OTP and reset password
+        Alert.alert('Success', 'Password reset OTP verified successfully!');
+      } else {
+        Alert.alert(t('error'), t('invalidOtp'));
+      }
     } else {
       Alert.alert(t('error'), t('invalidOtp'));
     }
