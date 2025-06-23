@@ -88,3 +88,43 @@ cd ios && fastlane release
 # For Android
 
 cd android && fastlane release
+
+📁 Folder Structure
+
+project-root/
+├── test/
+│ └── specs/
+│ └── home.e2e.js
+├── wdio.conf.js
+✍️ Sample Test (test/specs/home.e2e.js)
+
+describe('Home Screen', () => {
+it('should show welcome text', async () => {
+const welcomeText = await $('~welcomeText'); // Match testID in React Native
+await expect(welcomeText).toBeDisplayed();
+});
+});
+Make sure your app code includes:
+
+<Text testID="welcomeText">Welcome to Hospital Manager</Text>
+
+npx wdio run wdio.conf.js
+
+✅ Unit Testing (Jest)
+This project uses Jest for unit testing.
+
+🔹 Run Tests
+
+yarn test
+✅ Sample Output
+
+PASS src/screens/HomeScreen.test.js
+HomeScreen
+✓ renders welcome text (27 ms)
+
+Test Suites: 1 passed, 1 total
+Tests: 1 passed, 1 total
+If you see a Watchman warning, you can clear it using:
+
+watchman watch-del '/Users/rafa/Projects/hospital-manager'
+watchman watch-project '/Users/rafa/Projects/hospital-manager'

@@ -31,6 +31,8 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+
+
       style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>{t('welcomeBack')}</Text>
