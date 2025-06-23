@@ -16,9 +16,11 @@ import Toast from 'react-native-toast-message';
 import axiosInstance from './src/axiosInstance';
 import { URLS } from './src/constants/urls';
 import { Modal, View, Text, StyleSheet, Button } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 function App(): React.JSX.Element {
   const [isMaintenanceModalVisible, setMaintenanceModalVisible] = useState(false);
+  const { t } = useTranslation();
 
   const performHealthCheck = () => {
     axiosInstance.get(URLS.healthCheck)
@@ -30,8 +32,8 @@ function App(): React.JSX.Element {
         setMaintenanceModalVisible(true);
         Toast.show({
           type: 'error',
-          text1: 'Error',
-          text2: 'Health check failed',
+          text1: t('healthCheck.failedToastTitle'),
+          text2: t('healthCheck.failedToastMessage'),
           position: 'bottom'
         });
       });
@@ -58,10 +60,10 @@ function App(): React.JSX.Element {
           >
             <View style={styles.modalOverlay}>
               <View style={styles.modalContent}>
-                <Text style={styles.modalTitle}>System Under Maintenance</Text>
-                <Text style={styles.modalText}>We are currently performing maintenance. Please try again later.</Text>
+                <Text style={styles.modalTitle}>{t('healthCheck.maintenanceTitle')}</Text>
+                <Text style={styles.modalText}>{t('healthCheck.maintenanceMessage')}</Text>
                 <View style={{ marginTop: 14, width: '100%' }}>
-                  <Button title="Retry" onPress={performHealthCheck} />
+                  <Button title={t('healthCheck.retryButton')} onPress={performHealthCheck} />
                 </View>
               </View>
             </View>

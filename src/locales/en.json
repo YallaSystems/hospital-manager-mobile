@@ -30,5 +30,12 @@
     "enterYourEmail": "Please enter your email address",
     "enterValidEmail": "Please enter a valid email address",
     "failedToSendResetLink": "Failed to send reset link. Please try again."
+  },
+  "healthCheck": {
+    "maintenanceTitle": "System Under Maintenance",
+    "maintenanceMessage": "We are currently performing maintenance. Please try again later.",
+    "retryButton": "Retry",
+    "failedToastTitle": "Error",
+    "failedToastMessage": "Health check failed"
   }
 }

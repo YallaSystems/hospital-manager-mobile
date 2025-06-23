@@ -30,5 +30,12 @@
     "enterYourEmail": "يرجى إدخال عنوان بريدك الإلكتروني",
     "enterValidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح",
     "failedToSendResetLink": "فشل إرسال رابط إعادة التعيين. يرجى المحاولة مرة أخرى."
+  },
+  "healthCheck": {
+    "maintenanceTitle": "النظام تحت الصيانة",
+    "maintenanceMessage": "نحن نقوم حالياً بأعمال صيانة. يرجى المحاولة لاحقاً.",
+    "retryButton": "إعادة المحاولة",
+    "failedToastTitle": "خطأ",
+    "failedToastMessage": "فشل فحص الصحة"
   }
 }
