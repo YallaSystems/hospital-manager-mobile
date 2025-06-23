@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Alert } from 'react-native';
+import axiosInstance from '../axiosInstance';
 
 /**
  * A view model hook for the Signup screen.
@@ -22,14 +23,19 @@ export const useSignupViewModel = (navigation: any) => {
    * It validates that the passwords match and will dispatch a signup action.
    * Currently, it navigates to the OTP screen for verification upon successful validation.
    */
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (password !== confirmPassword) {
       Alert.alert('Error', 'Passwords do not match');
       return;
     }
     // Dispatch signup action here
     // For now, let's navigate to OTP as an example
-    navigation.navigate('Otp', { email, password });
+    try {
+      await axiosInstance.post('auth/send-otp', { email: email.trim() });
+      navigation.navigate('Otp', { email, password });
+    } catch (err) {
+      Alert.alert('Error', 'Failed to send OTP. Please try again.');
+    }
   };
 
   return {
