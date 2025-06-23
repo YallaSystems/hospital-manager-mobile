@@ -15,14 +15,15 @@ import './src/i18n';
 import Toast from 'react-native-toast-message';
 import axiosInstance from './src/axiosInstance';
 import { URLS } from './src/constants/urls';
-import { Modal, View, Text, StyleSheet } from 'react-native';
+import { Modal, View, Text, StyleSheet, Button } from 'react-native';
 
 function App(): React.JSX.Element {
   const [isMaintenanceModalVisible, setMaintenanceModalVisible] = useState(false);
 
-  useEffect(() => {
+  const performHealthCheck = () => {
     axiosInstance.get(URLS.healthCheck)
       .then(res => {
+        setMaintenanceModalVisible(false);
         console.log('Health check success:', res.data);
       })
       .catch(err => {
@@ -34,6 +35,10 @@ function App(): React.JSX.Element {
           position: 'bottom'
         });
       });
+  };
+
+  useEffect(() => {
+    performHealthCheck();
   }, []);
 
   return (
@@ -55,6 +60,9 @@ function App(): React.JSX.Element {
               <View style={styles.modalContent}>
                 <Text style={styles.modalTitle}>System Under Maintenance</Text>
                 <Text style={styles.modalText}>We are currently performing maintenance. Please try again later.</Text>
+                <View style={{ marginTop: 14, width: '100%' }}>
+                  <Button title="Retry" onPress={performHealthCheck} />
+                </View>
               </View>
             </View>
           </Modal>
