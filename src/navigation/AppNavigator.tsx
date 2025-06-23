@@ -16,14 +16,6 @@ import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 // Placeholder screens if not already implemented
-const SearchScreen = () => {
-  const { t } = useTranslation();
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{t('search')}</Text>
-    </View>
-  );
-};
 const AppointmentsScreen = () => {
   const { t } = useTranslation();
   return (
@@ -57,7 +49,6 @@ export type AuthStackParamList = {
 export type RootStackParamList = {
   Auth: NavigatorScreenParams<AuthStackParamList>;
   Home: undefined;
-  Search: undefined;
   Appointments: undefined;
   Profile: undefined;
   Main: undefined;
@@ -89,14 +80,6 @@ const HomeStack = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  );
-};
-const SearchStack = () => {
-  const { t } = useTranslation();
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Search" component={SearchScreen} options={{ headerShown: false }} />
     </Stack.Navigator>
   );
 };
@@ -162,7 +145,6 @@ const MainTabs = () => {
   return (
     <Tab.Navigator initialRouteName="HomeStackScreen" screenOptions={{ headerShown: false }}>
       <Tab.Screen name="HomeStackScreen" component={HomeStack} options={{ title: t('home') }} />
-      <Tab.Screen name="SearchStackScreen" component={SearchStack} options={{ title: t('search') }} />
       <Tab.Screen name="AppointmentsStackScreen" component={AppointmentsStack} options={{ title: t('appointments') }} />
       <Tab.Screen name="ProfileStackScreen" component={ProfileStack} options={{ title: t('profile') }} />
     </Tab.Navigator>
