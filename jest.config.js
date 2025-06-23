@@ -7,7 +7,6 @@ module.exports = {
     'node_modules/(?!(jest-)?@react-native|react-native|react-native-elements|react-redux/.*)',
   ],
   testMatch: [
-    '<rootDir>/__tests__/**/*.test.js',
-    '<rootDir>/src/**/*.(test|spec).js',
+    '<rootDir>/src/**/*.(test|spec).{js,ts,tsx}',
   ],
 };
