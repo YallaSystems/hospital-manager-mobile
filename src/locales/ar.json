@@ -11,5 +11,24 @@
   "welcomeBack": "مرحبًا بعودتك",
   "language": "اللغة",
   "back": "السابق",
-  "home": "الرئيسية"
+  "home": "الرئيسية",
+  "otpScreen": "التحقق من OTP",
+  "signup": "التسجيل",
+  "fullName": "الاسم الكامل",
+  "confirmPassword": "تأكيد كلمة المرور",
+  "dontHaveAccount": "ليس لديك حساب؟",
+  "createAccount": "إنشاء حساب",
+  "otpVerification": "التحقق من OTP",
+  "enterOtp": "أدخل OTP المرسل إلى {{email}}",
+  "verify": "تحقق",
+  "invalidOtp": "رمز OTP غير صالح. يرجى المحاولة مرة أخرى.",
+  "forgotPassword": "نسيت كلمة المرور؟",
+  "resetPassword": "إعادة تعيين كلمة المرور",
+  "enterEmailForReset": "أدخل عنوان بريدك الإلكتروني لإعادة تعيين كلمة المرور",
+  "sendResetLink": "إرسال رابط إعادة التعيين",
+  "errors": {
+    "enterYourEmail": "يرجى إدخال عنوان بريدك الإلكتروني",
+    "enterValidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح",
+    "failedToSendResetLink": "فشل إرسال رابط إعادة التعيين. يرجى المحاولة مرة أخرى."
+  }
 }

@@ -11,5 +11,24 @@
   "welcomeBack": "Welcome Back",
   "language": "Language",
   "back": "Back",
-  "home": "Home"
+  "home": "Home",
+  "otpScreen": "OTP Verification",
+  "signup": "Signup",
+  "fullName": "Full Name",
+  "confirmPassword": "Confirm Password",
+  "dontHaveAccount": "Don't have an account?",
+  "createAccount": "Create Account",
+  "otpVerification": "OTP Verification",
+  "enterOtp": "Enter the OTP sent to {{email}}",
+  "verify": "Verify",
+  "invalidOtp": "Invalid OTP. Please try again.",
+  "forgotPassword": "Forgot Password?",
+  "resetPassword": "Reset Password",
+  "enterEmailForReset": "Enter your email address to reset your password",
+  "sendResetLink": "Send Reset Link",
+  "errors": {
+    "enterYourEmail": "Please enter your email address",
+    "enterValidEmail": "Please enter a valid email address",
+    "failedToSendResetLink": "Failed to send reset link. Please try again."
+  }
 }
