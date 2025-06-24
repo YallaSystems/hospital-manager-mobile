@@ -49,6 +49,11 @@ export const useSignupViewModel = (navigation: any) => {
     // For now, let's navigate to OTP as an example
     try {
       const sendOTPResponse = await axiosInstance.post(URLS.sendOTP, { email: email.trim() });
+      Toast.show({
+        type: 'success',
+        text1: t('success'),
+        text2: sendOTPResponse.data.message,
+      });
       navigation.navigate('Otp', { email, password });
     } catch (err) {
       Toast.show({
