@@ -1,12 +1,17 @@
 import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
+import axiosInstance from '../axiosInstance';
 
 // Mock dependencies
 jest.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (key) => key,
   }),
+}));
+
+jest.mock('../axiosInstance', () => ({
+  post: jest.fn(() => Promise.resolve()),
 }));
 
 // Test suite for the ForgotPasswordScreen component.

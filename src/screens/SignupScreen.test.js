@@ -14,7 +14,8 @@ jest.mock('react-i18next', () => ({
 
 // Test suite for the SignupScreen component.
 describe('SignupScreen', () => {
-  const mockSetFullName = jest.fn();
+  const mockSetFirstName = jest.fn();
+  const mockSetLastName = jest.fn();
   const mockSetEmail = jest.fn();
   const mockSetPassword = jest.fn();
   const mockSetConfirmPassword = jest.fn();
@@ -26,8 +27,10 @@ describe('SignupScreen', () => {
     jest.clearAllMocks();
     // Mocks the return value of the useSignupViewModel hook to control its output during testing.
     useSignupViewModel.mockReturnValue({
-      fullName: '',
-      setFullName: mockSetFullName,
+      firstName: '',
+      setFirstName: mockSetFirstName,
+      lastName: '',
+      setLastName: mockSetLastName,
       email: '',
       setEmail: mockSetEmail,
       password: '',
@@ -43,7 +46,8 @@ describe('SignupScreen', () => {
     const { getByPlaceholderText, getByText } = render(<SignupScreen navigation={jest.fn()} />);
     
     // Asserts that all the necessary input fields and the signup button are displayed.
-    expect(getByPlaceholderText('fullName')).toBeTruthy();
+    expect(getByPlaceholderText('firstName')).toBeTruthy();
+    expect(getByPlaceholderText('lastName')).toBeTruthy();
     expect(getByPlaceholderText('email')).toBeTruthy();
     expect(getByPlaceholderText('password')).toBeTruthy();
     expect(getByPlaceholderText('confirmPassword')).toBeTruthy();
@@ -54,9 +58,13 @@ describe('SignupScreen', () => {
   it('calls setters on input change', () => {
     const { getByPlaceholderText } = render(<SignupScreen navigation={jest.fn()} />);
 
-    // Simulates typing a full name and asserts that the corresponding setter is called.
-    fireEvent.changeText(getByPlaceholderText('fullName'), 'John Doe');
-    expect(mockSetFullName).toHaveBeenCalledWith('John Doe');
+    // Simulates typing a first name and asserts that the corresponding setter is called.
+    fireEvent.changeText(getByPlaceholderText('firstName'), 'John');
+    expect(mockSetFirstName).toHaveBeenCalledWith('John');
+
+    // Simulates typing a last name and asserts that the corresponding setter is called.
+    fireEvent.changeText(getByPlaceholderText('lastName'), 'Doe');
+    expect(mockSetLastName).toHaveBeenCalledWith('Doe');
 
     // Simulates typing an email and asserts that the corresponding setter is called.
     fireEvent.changeText(getByPlaceholderText('email'), 'john@example.com');
