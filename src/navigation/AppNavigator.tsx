@@ -135,7 +135,7 @@ const AuthStack = () => {
       <AuthStackNavigator.Screen name="Login" component={LoginScreen} options={{ title: t('login') }} />
       <AuthStackNavigator.Screen name="Signup" component={SignupScreen} options={{ title: t('signup') }} />
       <AuthStackNavigator.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: t('forgotPassword') }} />
-      <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={{ title: t('otp') }} />
+      <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={{ title: t('otpScreen') }} />
     </AuthStackNavigator.Navigator>
   );
 };
