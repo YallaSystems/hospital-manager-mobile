@@ -18,8 +18,10 @@ type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 const SignupScreen = ({ navigation }: SignupScreenProps) => {
   const { t } = useTranslation();
   const {
-    fullName,
-    setFullName,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
     email,
     setEmail,
     password,
@@ -37,10 +39,17 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
         <Text style={styles.title}>{t('createAccount')}</Text>
         <TextInput
           style={styles.input}
-          placeholder={t('fullName')}
-          value={fullName}
-          onChangeText={setFullName}
-          autoCapitalize="none"
+          placeholder={t('firstName') || 'First Name'}
+          value={firstName}
+          onChangeText={setFirstName}
+          autoCapitalize="words"
+        />
+        <TextInput
+          style={styles.input}
+          placeholder={t('lastName') || 'Last Name'}
+          value={lastName}
+          onChangeText={setLastName}
+          autoCapitalize="words"
         />
         <TextInput
           style={styles.input}

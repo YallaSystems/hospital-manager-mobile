@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Alert } from 'react-native';
+import Toast from 'react-native-toast-message';
 import axiosInstance from '../axiosInstance';
+import { URLS } from '../constants/urls';
+import { useTranslation } from 'react-i18next';
 
 /**
  * A view model hook for the Signup screen.
@@ -12,11 +14,13 @@ import axiosInstance from '../axiosInstance';
  * @returns An object containing the state variables, their setters, and the signup handler function.
  */
 export const useSignupViewModel = (navigation: any) => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstName] = useState('fn');
+  const [lastName, setLastName] = useState('ln');
+  const [email, setEmail] = useState(`sadi@yalla.systems`);
+  const [password, setPassword] = useState('12345678');
+  const [confirmPassword, setConfirmPassword] = useState('12345678');
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   /**
    * Handles the signup process.
@@ -24,23 +28,42 @@ export const useSignupViewModel = (navigation: any) => {
    * Currently, it navigates to the OTP screen for verification upon successful validation.
    */
   const handleSignup = async () => {
+    if (password.length < 8) {
+      Toast.show({
+        type: 'error',
+        text1: t('error'),
+        text2: t('errors.passwordTooShort'),
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Passwords do not match');
+      Toast.show({
+        type: 'error',
+        text1: t('error'),
+        text2: t('errors.passwordsDoNotMatch'),
+      });
       return;
     }
     // Dispatch signup action here
     // For now, let's navigate to OTP as an example
     try {
-      await axiosInstance.post('auth/send-otp', { email: email.trim() });
+      const sendOTPResponse = await axiosInstance.post(URLS.sendOTP, { email: email.trim() });
       navigation.navigate('Otp', { email, password });
     } catch (err) {
-      Alert.alert('Error', 'Failed to send OTP. Please try again.');
+      Toast.show({
+        type: 'error',
+        text1: t('error'),
+        text2: t('errors.failedToSendResetLink'),
+      });
     }
   };
 
   return {
-    fullName,
-    setFullName,
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
     email,
     setEmail,
     password,
