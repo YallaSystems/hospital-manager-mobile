@@ -57,31 +57,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "test": "jest --config=jest.config.js",
-  "detox": {
-    "testRunner": "jest",
-    "runnerConfig": "e2e/config.json",
-    "apps": {
-      "ios.debug": {
-        "type": "ios.app",
-        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/hospitalManager.app",
-        "build": "xcodebuild -workspace ios/hospitalManager.xcworkspace -scheme hospitalManager -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build"
-      }
-    },
-    "devices": {
-      "simulator": {
-        "type": "ios.simulator",
-        "device": {
-          "type": "iPhone 14"
-        }
-      }
-    },
-    "configurations": {
-      "ios.sim.debug": {
-        "device": "simulator",
-        "app": "ios.debug"
-      }
-    }
   }
 }
