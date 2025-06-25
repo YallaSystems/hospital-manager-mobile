@@ -1,29 +1,33 @@
-## Pull Request Title
-The title should succinctly explain the changes. For example, "Add search functionality to the homepage".
+👉 Please also remember to add your Jira ticket number to the PR title - this will helps us with the release process e.g SCRUM X: Introduce exciting new feature
 
-## Description
-Provide a brief description of the changes your pull request makes. Explain the problem it solves or the feature it adds to the project. Include any relevant issue numbers.
+:warning: Delete sections that don’t apply
 
-## Type of Change
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
-- [ ] This change requires a documentation update
+Description of PR
+* Summary of what you have done - one or two liner
+Details:
+* Approach when solving the problem
+* Describe implementation
+* Organisation, architecture of new code | changes
 
-## How Has This Been Tested?
-Describe how you have tested these changes. Include details of your testing environment, tests ran to see how your change affects other areas of the code, etc.
+(Please make sure your description of your PR is complete and is enough for a non-developer to understand what you have done. Write a mini essay if need be, but it has to be comprehensive so Reviewers can understand your work without needing to jump on a call with you)
 
-## Checklist:
-- [ ] I have read the [CONTRIBUTING](LINK_TO_CONTRIBUTING.MD) document.
-- [ ] My code follows the code style of this project.
-- [ ] I have added or updated the tests to cover my changes.
-- [ ] I have checked that my changes do not introduce any breaking changes.
-- [ ] I have updated the documentation accordingly (if necessary).
-- [ ] I have commented my code, particularly in hard-to-understand areas.
-- [ ] I have made corresponding changes to the documentation (if applicable).
+If available/ applicable:
+Add screenshot of feature (can also be - before/ after)
+Add screenshot of bug
 
-## Screenshots
-Insert any screenshots or videos (if applicable) to help explain your problem or demonstrate your changes.
+#### Meta
+[Jira](url to ticket)
+[Any other links related with this PR]()
 
-## Additional Notes
-Add any other context or notes about the pull request here. This could include necessary deployment changes, new dependencies, etc.
+#### Tests
+If applicable:
+Provide unit test details
+Provide e2e test details
+
+I have developed and tested this in:
+- ~iOS Simulator~
+- ~iOS Physical Device~
+- ~Desktop Browsers~
+- ~Android Simulator~
+- ~Android Physical Device~
+(Remove tildes/strikethrough from platforms tested)

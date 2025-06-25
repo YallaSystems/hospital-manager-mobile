@@ -1,8 +1,0 @@
-{
-    "testRunner": "jest",
-    "setupFilesAfterEnv": [
-        "./init.js"
-    ],
-    "testEnvironment": "node",
-    "testTimeout": 120000
-}
