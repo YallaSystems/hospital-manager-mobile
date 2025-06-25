@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,11 +7,13 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  Modal,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { useSignupViewModel } from '../viewmodels/useSignupViewModel';
+import { Picker } from '@react-native-picker/picker';
 
 type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -29,7 +31,11 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     confirmPassword,
     setConfirmPassword,
     handleSignup,
+    sex,
+    setSex,
   } = useSignupViewModel(navigation);
+
+  const [sexPickerVisible, setSexPickerVisible] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -59,6 +65,37 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           keyboardType="email-address"
           autoCapitalize="none"
         />
+        <TouchableOpacity
+          style={styles.dropdown}
+          onPress={() => setSexPickerVisible(true)}
+        >
+          <Text style={{ color: sex ? '#000' : '#aaa', fontSize: 16 }}>
+            {sex === 'male' ? (t('male') || 'Male') : (sex === 'female' ? (t('female') || 'Female') : t('selectSex') || 'Select Sex')}
+          </Text>
+        </TouchableOpacity>
+        <Modal
+          visible={sexPickerVisible}
+          transparent
+          animationType="fade"
+        >
+          <View style={styles.modalOverlay}>
+            <TouchableOpacity style={StyleSheet.absoluteFill} onPress={() => setSexPickerVisible(false)} />
+            <View style={styles.pickerContainer}>
+              <Text style={styles.pickerLabel}>{t('gender') || 'Gender'}</Text>
+              <Picker
+                style={{ width: '100%' }}
+                selectedValue={sex}
+                onValueChange={(itemValue) => {
+                  setSex(itemValue);
+                  setSexPickerVisible(false);
+                }}
+              >
+                <Picker.Item label={t('male') || 'Male'} value="male" />
+                <Picker.Item label={t('female') || 'Female'} value="female" />
+              </Picker>
+            </View>
+          </View>
+        </Modal>
         <TextInput
           style={styles.input}
           placeholder={t('password')}
@@ -120,6 +157,35 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  dropdown: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    marginBottom: 15,
+    justifyContent: 'center',
+    backgroundColor: '#fff',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pickerContainer: {
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    width: '80%',
+    overflow: 'hidden',
+  },
+  pickerLabel: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 16,
+    marginBottom: -18,
+    textAlign: 'center'
   },
 });
 

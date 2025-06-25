@@ -33,7 +33,10 @@
     "enterValidEmail": "يرجى إدخال عنوان بريد إلكتروني صالح",
     "failedToSendResetLink": "فشل إرسال رابط إعادة التعيين. يرجى المحاولة مرة أخرى.",
     "passwordTooShort": "يجب أن تتكون كلمة المرور من 8 أحرف على الأقل",
-    "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين"
+    "passwordsDoNotMatch": "كلمتا المرور غير متطابقتين",
+    "enterFirstName": "يرجى إدخال الاسم الأول",
+    "enterLastName": "يرجى إدخال اسم العائلة",
+    "selectSex": "يرجى اختيار الجنس"
   },
   "healthCheck": {
     "maintenanceTitle": "النظام تحت الصيانة",
@@ -41,5 +44,10 @@
     "retryButton": "إعادة المحاولة",
     "failedToastTitle": "خطأ",
     "failedToastMessage": "فشل فحص الصحة"
-  }
+  },
+  "selectSex": "اختر الجنس",
+  "male": "ذكر",
+  "female": "أنثى",
+  "gender": "الجنس",
+  "missingData": "بيانات ناقصة"
 }
