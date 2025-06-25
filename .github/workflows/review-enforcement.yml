@@ -9,12 +9,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check for reviewer screenshot and comment
+      - name: Check for reviewer screenshot and comment on approval only
         uses: actions/github-script@v7
         with:
           script: |
             const prNumber = context.payload.pull_request.number;
             const { owner, repo } = context.repo;
+            const review = context.payload.review;
+
+            // Do not do any action if it is not an Approval
+            if (review.state !== 'approved') {
+              console.log('Review is not an approval — skipping.');
+              return;
+            }
 
             const reviews = await github.paginate(
               github.rest.pulls.listReviews,
@@ -26,14 +33,16 @@ jobs:
               { owner, repo, issue_number: prNumber }
             );
 
-            // Collect reviewers who submitted a review
-            const reviewerUsernames = new Set(reviews.map(r => r.user.login));
+            // Collect reviewers who approved
+            const approvedReviewers = new Set(
+              reviews.filter(r => r.state === 'APPROVED').map(r => r.user.login)
+            );
 
-            // Check if any reviewer left a comment WITH image
+            // Check if any approving reviewer left a comment with image
             let screenshotFound = false;
             for (const comment of comments) {
               const hasImage = /!\[.*\]\(.*\.(png|jpg|jpeg|gif)\)/i.test(comment.body);
-              if (hasImage && reviewerUsernames.has(comment.user.login)) {
+              if (hasImage && approvedReviewers.has(comment.user.login)) {
                 screenshotFound = true;
                 break;
               }
@@ -44,6 +53,6 @@ jobs:
                 owner,
                 repo,
                 issue_number: prNumber,
-                body: "⚠️ At least one reviewer must leave a comment with a screenshot/image to meet the review checklist. Please upload a screenshot and describe what was tested."
+                body: "⚠️ A reviewer approved the PR, but no screenshot was found in comments. Please ensure at least one reviewer uploads a screenshot as part of the review checklist."
               });
             }
