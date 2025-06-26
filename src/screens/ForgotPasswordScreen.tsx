@@ -38,11 +38,8 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
     setError('');
 
     try {
-      // Here you would typically make an API call to send the reset link
-      // For now, we'll simulate the API call with a timeout
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Navigate to OTP screen with the email
       navigation.navigate('Otp', { email: email.trim() });
     } catch (err) {
       setError(t('errors.failedToSendResetLink'));
