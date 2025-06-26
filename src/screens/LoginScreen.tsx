@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  ViewStyle,
 } from 'react-native';
 import { useLoginViewModel } from '../viewmodels/useLoginViewModel';
 import { useTranslation } from 'react-i18next';
@@ -29,6 +30,17 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
     handleLogin,
   } = useLoginViewModel(navigation);
   const { t } = useTranslation();
+  const isFormValid = email.trim() && password.trim();
+
+  const submitButtonStyle = (isEnabled: boolean): ViewStyle => ({
+    backgroundColor: isEnabled ? COLORS.primary : COLORS.disabled,
+    height: 50,
+    borderRadius: 8,
+    justifyContent: 'center' as ViewStyle['justifyContent'],
+    alignItems: 'center' as ViewStyle['alignItems'],
+    marginTop: 15,
+    opacity: isEnabled ? 1 : 0.7,
+  });
 
   return (
     <KeyboardAvoidingView
@@ -61,9 +73,9 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
         </TouchableOpacity>
         {error && <Text style={styles.errorText}>{error}</Text>}
         <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
+          style={submitButtonStyle(!(loading || !isFormValid))}
           onPress={handleLogin}
-          disabled={loading}>
+          disabled={loading || !isFormValid}>
           {loading ? (
             <ActivityIndicator color={COLORS.white} />
           ) : (

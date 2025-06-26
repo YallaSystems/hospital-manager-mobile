@@ -8,4 +8,5 @@ export const COLORS = {
   darkGray: '#555',
   error: 'red',
   description: '#666',
-};
+  disabled: '#cccccc',
+}; 

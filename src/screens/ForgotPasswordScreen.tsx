@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActivityIndicator,
+  ViewStyle,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -22,6 +23,8 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const { t } = useTranslation();
+
+  const isFormValid = email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleSendResetLink = async () => {
     if (!email.trim()) {
@@ -49,6 +52,16 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
     }
   };
 
+  const submitButtonStyle = (isEnabled: boolean): ViewStyle => ({
+    backgroundColor: isEnabled ? COLORS.primary : COLORS.disabled,
+    height: 50,
+    borderRadius: 8,
+    justifyContent: 'center' as ViewStyle['justifyContent'],
+    alignItems: 'center' as ViewStyle['alignItems'],
+    marginTop: 15,
+    opacity: isEnabled ? 1 : 0.7,
+  });
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -70,9 +83,9 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
         />
         {error && <Text style={styles.errorText}>{error}</Text>}
         <TouchableOpacity
-          style={[styles.button, loading && styles.buttonDisabled]}
+          style={submitButtonStyle(!(loading || !isFormValid))}
           onPress={handleSendResetLink}
-          disabled={loading}>
+          disabled={loading || !isFormValid}>
           {loading ? (
             <ActivityIndicator color={COLORS.white} />
           ) : (

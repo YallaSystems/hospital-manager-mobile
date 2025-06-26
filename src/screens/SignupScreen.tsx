@@ -8,6 +8,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Modal,
+  ViewStyle,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -37,6 +38,25 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
   } = useSignupViewModel(navigation);
 
   const [sexPickerVisible, setSexPickerVisible] = useState(false);
+
+  const isFormValid =
+    firstName.trim() &&
+    lastName.trim() &&
+    email.trim() &&
+    /^[^\s@+]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) &&
+    sex &&
+    password.length >= 8 &&
+    password === confirmPassword;
+
+  const submitButtonStyle = (isEnabled: boolean): ViewStyle => ({
+    backgroundColor: isEnabled ? COLORS.primary : COLORS.disabled,
+    height: 50,
+    borderRadius: 8,
+    justifyContent: 'center' as ViewStyle['justifyContent'],
+    alignItems: 'center' as ViewStyle['alignItems'],
+    marginTop: 15,
+    opacity: isEnabled ? 1 : 0.7,
+  });
 
   return (
     <KeyboardAvoidingView
@@ -113,7 +133,11 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           secureTextEntry
           textContentType="none"
         />
-        <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <TouchableOpacity
+          style={submitButtonStyle(!!isFormValid)}
+          onPress={handleSignup}
+          disabled={!isFormValid}
+        >
           <Text style={styles.buttonText}>{t('signup')}</Text>
         </TouchableOpacity>
       </View>
