@@ -58,6 +58,12 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     opacity: isEnabled ? 1 : 0.7,
   });
 
+  const pickerData: Record<'male' | 'female' | '', string> = {
+    male: 'male',
+    female: 'female',
+    '': 'selectSex',
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -91,7 +97,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           onPress={() => setSexPickerVisible(true)}
         >
           <Text style={sexPickerText(sex)}>
-            {sex === 'male' ? (t('male') || 'Male') : (sex === 'female' ? (t('female') || 'Female') : t('selectSex') || 'Select Sex')}
+            {t(pickerData[sex])}
           </Text>
         </TouchableOpacity>
         <Modal
