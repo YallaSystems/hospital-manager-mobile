@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { loginRequest } from '../store/slices/authSlice';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
+import { COLORS } from '../constants/colors';
 
 type OtpScreenProps = NativeStackScreenProps<AuthStackParamList, 'Otp'>;
 
@@ -71,7 +72,7 @@ const OtpScreen = ({ route }: OtpScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   formContainer: {
     flex: 1,
@@ -86,7 +87,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: '#666',
+    color: COLORS.description,
     marginBottom: 30,
     textAlign: 'center',
   },
@@ -94,7 +95,7 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 60,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: COLORS.border,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 30,
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     letterSpacing: 10,
   },
   button: {
-    backgroundColor: '#f4511e',
+    backgroundColor: COLORS.primary,
     height: 50,
     borderRadius: 8,
     justifyContent: 'center',
@@ -112,7 +113,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
   },
   buttonText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
   },

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useHomeViewModel } from '../viewmodels/useHomeViewModel';
 import { useTranslation } from 'react-i18next';
+import { COLORS } from '../constants/colors';
 
 const HomeScreen = () => {
   const { t, i18n } = useTranslation();
@@ -20,7 +21,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   text: {
     fontSize: 24,

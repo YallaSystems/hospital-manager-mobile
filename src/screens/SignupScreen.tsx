@@ -14,6 +14,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { useSignupViewModel } from '../viewmodels/useSignupViewModel';
 import { Picker } from '@react-native-picker/picker';
+import { COLORS } from '../constants/colors';
 
 type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -123,14 +124,14 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
 // Dynamic style for sex picker text
 const sexPickerText = (sex: string) => ({
   fontSize: 16,
-  color: sex?.length ? '#000' : '#aaa',
+  color: sex?.length ? COLORS.black : COLORS.gray,
 });
 
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   formContainer: {
     flex: 1,
@@ -146,14 +147,14 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: COLORS.border,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#f4511e',
+    backgroundColor: COLORS.primary,
     height: 50,
     borderRadius: 8,
     justifyContent: 'center',
@@ -161,28 +162,28 @@ const styles = StyleSheet.create({
     marginTop: 15,
   },
   buttonText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
   },
   dropdown: {
     height: 50,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: COLORS.border,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.2)',
+    backgroundColor: COLORS.overlay,
     justifyContent: 'center',
     alignItems: 'center',
   },
   pickerContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
     borderRadius: 8,
     width: '80%',
     overflow: 'hidden',

@@ -13,6 +13,7 @@ import { useLoginViewModel } from '../viewmodels/useLoginViewModel';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
+import { COLORS } from '../constants/colors';
 
 type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -31,8 +32,6 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-
-
       style={styles.container}>
       <View style={styles.formContainer}>
         <Text style={styles.title}>{t('welcomeBack')}</Text>
@@ -65,7 +64,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           onPress={handleLogin}
           disabled={loading}>
           {loading ? (
-            <ActivityIndicator color="#fff" />
+            <ActivityIndicator color={COLORS.white} />
           ) : (
             <Text style={styles.buttonText}>{t('login')}</Text>
           )}
@@ -83,7 +82,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   formContainer: {
     flex: 1,
@@ -99,14 +98,14 @@ const styles = StyleSheet.create({
   input: {
     height: 50,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: COLORS.border,
     borderRadius: 8,
     paddingHorizontal: 15,
     marginBottom: 15,
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#f4511e',
+    backgroundColor: COLORS.primary,
     height: 50,
     borderRadius: 8,
     justifyContent: 'center',
@@ -117,12 +116,12 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonText: {
-    color: '#fff',
+    color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
   },
   errorText: {
-    color: 'red',
+    color: COLORS.error,
     textAlign: 'center',
     marginBottom: 10,
   },
@@ -132,10 +131,10 @@ const styles = StyleSheet.create({
   },
   signupButtonText: {
     fontSize: 16,
-    color: '#555',
+    color: COLORS.darkGray,
   },
   signupLink: {
-    color: '#f4511e',
+    color: COLORS.primary,
     fontWeight: 'bold',
   },
   forgotPasswordButton: {
@@ -144,7 +143,7 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText: {
     fontSize: 14,
-    color: '#f4511e',
+    color: COLORS.primary,
     fontWeight: '500',
   },
 });

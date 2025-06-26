@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useTranslation } from 'react-i18next';
+import { COLORS } from '../constants/colors';
 
 const ProfileScreen = () => {
   const { t, i18n } = useTranslation();
@@ -33,7 +34,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: COLORS.white,
   },
   title: {
     fontSize: 24,
