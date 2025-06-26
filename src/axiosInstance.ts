@@ -21,13 +21,21 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// To control the number of retry attempts for a request, add the `maxRetryCount` property to the axios config object:
+// Example: axiosInstance.get(url, { maxRetryCount: 5 })
+// If not provided, the default retry count is 3.
+
 // Response interceptor for retry and error toast
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const config = error.config;
+
+    // Use maxRetryCount from config, default to 3
+    const maxRetryCount = config?.maxRetryCount ?? 3;
+
     // Retry logic
-    if (!config || config.__retryCount >= 3) {
+    if (!config || config.__retryCount >= maxRetryCount) {
       // Show toast for error message
       const message = error?.response?.data?.message || error?.message || 'Network error';
       Toast.show({
