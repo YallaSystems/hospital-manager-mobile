@@ -2,19 +2,12 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import HomeScreen from '../screens/HomeScreen';
-import LoginScreen from '../screens/LoginScreen';
-import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../store';
-import { Text, View, Button } from 'react-native';
-import { logout } from '../store/slices/authSlice';
-import ProfileScreen from '../screens/ProfileScreen';
 import { useTranslation } from 'react-i18next';
-import SignupScreen from '../screens/SignupScreen';
-import OtpScreen from '../screens/OtpScreen';
-import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import AppointmentsScreen from '../screens/AppointmentsScreen';
+import HomeStack from './stacks/HomeStack';
+import AppointmentsStack from './stacks/AppointmentsStack';
+import ProfileStack from './stacks/ProfileStack';
+import AuthStack from './stacks/AuthStack';
 
 /**
  * Defines the parameters for the authentication stack, including routes for Login, Signup, ForgotPassword, and OTP.
@@ -46,90 +39,7 @@ export type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-/**
- * A dedicated stack navigator for the authentication flow.
- * This ensures that the authentication screens (Login, Signup, OTP) have their own navigation context,
- * separate from the main application stack.
- */
-const AuthStackNavigator = createNativeStackNavigator<AuthStackParamList>();
 const Tab = createBottomTabNavigator();
-
-// Header button for Appointments/Profile
-const HeaderAuthButton = ({ navigation }: { navigation: any }) => {
-  const { t } = useTranslation();
-  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const dispatch = useDispatch();
-  if (isAuthenticated) {
-    return <Button title={t('logout')} onPress={() => dispatch(logout())} />;
-  } else {
-    return <Button title={t('login')} onPress={() => navigation.navigate('Auth', { screen: 'Login' })} />;
-  }
-};
-
-const HomeStack = () => {
-  const { t } = useTranslation();
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    </Stack.Navigator>
-  );
-};
-const AppointmentsStack = () => {
-  const { t } = useTranslation();
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Appointments"
-        component={AppointmentsScreen}
-        options={({ navigation }) => ({
-          headerShown: true,
-          title: t('appointments'),
-          headerRight: () => <HeaderAuthButton navigation={navigation} />,
-        })}
-      />
-    </Stack.Navigator>
-  );
-};
-const ProfileStack = () => {
-  const { t } = useTranslation();
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={({ navigation }) => ({
-          headerShown: true,
-          title: t('profile'),
-          headerRight: () => <HeaderAuthButton navigation={navigation} />,
-        })}
-      />
-    </Stack.Navigator>
-  );
-};
-
-/**
- * The authentication stack navigator.
- * It groups all authentication-related screens under a single navigator.
- * This component defines the routes for login, signup, forgot password, and OTP verification.
- */
-const AuthStack = () => {
-  const { t } = useTranslation();
-  return (
-    <AuthStackNavigator.Navigator
-      screenOptions={({navigation})=>({
-        headerShown: true,
-        headerLeft: () => (
-          <Button title={t('back')} onPress={() => navigation.goBack()} />
-        ),
-      })}
-    >
-      <AuthStackNavigator.Screen name="Login" component={LoginScreen} options={{ title: t('login') }} />
-      <AuthStackNavigator.Screen name="Signup" component={SignupScreen} options={{ title: t('signup') }} />
-      <AuthStackNavigator.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: t('forgotPassword') }} />
-      <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={{ title: t('otpScreen') }} />
-    </AuthStackNavigator.Navigator>
-  );
-};
 
 const MainTabs = () => {
   const { t } = useTranslation();
