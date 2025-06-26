@@ -14,16 +14,7 @@ import SignupScreen from '../screens/SignupScreen';
 import OtpScreen from '../screens/OtpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import { NavigatorScreenParams } from '@react-navigation/native';
-
-// Placeholder screens if not already implemented
-const AppointmentsScreen = () => {
-  const { t } = useTranslation();
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{t('appointments')}</Text>
-    </View>
-  );
-};
+import AppointmentsScreen from '../screens/AppointmentsScreen';
 
 /**
  * Defines the parameters for the authentication stack, including routes for Login, Signup, ForgotPassword, and OTP.
