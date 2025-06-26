@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import axiosInstance from '../axiosInstance';
@@ -29,7 +29,7 @@ export const useSignupViewModel = (navigation: any) => {
    * It validates that the passwords match and will dispatch a signup action.
    * Currently, it navigates to the OTP screen for verification upon successful validation.
    */
-  const handleSignup = async () => {
+  const handleSignup = useCallback(async () => {
     if (!firstName.trim()) {
       Toast.show({
         type: 'error',
@@ -105,7 +105,7 @@ export const useSignupViewModel = (navigation: any) => {
         text2: t('errors.failedToSendResetLink'),
       });
     }
-  };
+  }, [firstName, lastName, email, sex, password, confirmPassword, navigation, t]);
 
   const handleSignupSubmitAfterOTP = async (Otp: string) => {
     try {
