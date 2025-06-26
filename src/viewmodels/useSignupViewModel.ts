@@ -34,7 +34,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterFirstName') || 'Please enter your first name',
+        text2: t('errors.enterFirstName', 'Please enter your first name'),
       });
       return;
     }
@@ -42,7 +42,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterLastName') || 'Please enter your last name',
+        text2: t('errors.enterLastName', 'Please enter your last name'),
       });
       return;
     }
@@ -50,7 +50,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterYourEmail') || 'Please enter your email',
+        text2: t('errors.enterYourEmail', 'Please enter your email'),
       });
       return;
     }
@@ -60,7 +60,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterValidEmail') || 'Please enter a valid email',
+        text2: t('errors.enterValidEmail', 'Please enter a valid email'),
       });
       return;
     }
@@ -68,7 +68,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.selectSex') || 'Please select your gender',
+        text2: t('errors.selectSex', 'Please select your gender'),
       });
       return;
     }
@@ -132,7 +132,7 @@ export const useSignupViewModel = (navigation: any) => {
         text1: t('success'),
         text2: response.data.message || 'Registration successful',
       });
-      navigation.replace('Main',{screen: 'Home'});
+      navigation.replace('Main', { screen: 'Home' });
     } catch (err: any) {
       Toast.show({
         type: 'error',
