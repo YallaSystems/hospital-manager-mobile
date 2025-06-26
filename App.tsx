@@ -17,30 +17,14 @@ import axiosInstance from './src/axiosInstance';
 import { URLS } from './src/constants/urls';
 import { Modal, View, Text, StyleSheet, Button } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { performHealthCheck } from './src/services/healthCheckService';
 
 function App(): React.JSX.Element {
   const [isMaintenanceModalVisible, setMaintenanceModalVisible] = useState(false);
   const { t } = useTranslation();
 
-  const performHealthCheck = () => {
-    axiosInstance.get(URLS.healthCheck)
-      .then(res => {
-        setMaintenanceModalVisible(false);
-        console.log('Health check success:', res.data);
-      })
-      .catch(err => {
-        setMaintenanceModalVisible(true);
-        Toast.show({
-          type: 'error',
-          text1: t('healthCheck.failedToastTitle'),
-          text2: t('healthCheck.failedToastMessage'),
-          position: 'bottom'
-        });
-      });
-  };
-
   useEffect(() => {
-    performHealthCheck();
+    performHealthCheck(setMaintenanceModalVisible, t);
   }, []);
 
   return (
@@ -63,7 +47,7 @@ function App(): React.JSX.Element {
                 <Text style={styles.modalTitle}>{t('healthCheck.maintenanceTitle')}</Text>
                 <Text style={styles.modalText}>{t('healthCheck.maintenanceMessage')}</Text>
                 <View style={{ marginTop: 14, width: '100%' }}>
-                  <Button title={t('healthCheck.retryButton')} onPress={performHealthCheck} />
+                  <Button title={t('healthCheck.retryButton')} onPress={() => performHealthCheck(setMaintenanceModalVisible, t)} />
                 </View>
               </View>
             </View>
