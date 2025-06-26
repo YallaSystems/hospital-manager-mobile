@@ -69,7 +69,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           style={styles.dropdown}
           onPress={() => setSexPickerVisible(true)}
         >
-          <Text style={{ color: sex ? '#000' : '#aaa', fontSize: 16 }}>
+          <Text style={sexPickerText(sex)}>
             {sex === 'male' ? (t('male') || 'Male') : (sex === 'female' ? (t('female') || 'Female') : t('selectSex') || 'Select Sex')}
           </Text>
         </TouchableOpacity>
@@ -119,6 +119,13 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     </KeyboardAvoidingView>
   );
 };
+
+// Dynamic style for sex picker text
+const sexPickerText = (sex: string) => ({
+  fontSize: 16,
+  color: sex?.length ? '#000' : '#aaa',
+});
+
 
 const styles = StyleSheet.create({
   container: {
