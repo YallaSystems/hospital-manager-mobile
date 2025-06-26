@@ -33,9 +33,11 @@ axiosInstance.interceptors.response.use(
 
     // Use maxRetryCount from config, default to 3
     const maxRetryCount = config?.maxRetryCount ?? 3;
+    const status = error.response?.status;
+    const shouldRetry = !status || (status >= 500 && status < 600);
 
     // Retry logic
-    if (!config || config.__retryCount >= maxRetryCount) {
+    if (shouldRetry || !config || config.__retryCount >= maxRetryCount) {
       // Show toast for error message
       const message = error?.response?.data?.message || error?.message || 'Network error';
       Toast.show({
