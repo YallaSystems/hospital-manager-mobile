@@ -16,7 +16,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{t('profile')}</Text>
-      <Text style={styles.label}>{t('language') || 'Language'}</Text>
+      <Text style={styles.label}>{t('language')}</Text>
       <Picker
         selectedValue={selectedLanguage}
         style={styles.picker}

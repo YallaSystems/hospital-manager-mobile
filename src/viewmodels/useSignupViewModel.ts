@@ -36,7 +36,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterFirstName', 'Please enter your first name'),
+        text2: t('errors.enterFirstName'),
       });
       return;
     }
@@ -44,7 +44,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterLastName', 'Please enter your last name'),
+        text2: t('errors.enterLastName'),
       });
       return;
     }
@@ -52,7 +52,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterYourEmail', 'Please enter your email'),
+        text2: t('errors.enterYourEmail'),
       });
       return;
     }
@@ -62,7 +62,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.enterValidEmail', 'Please enter a valid email'),
+        text2: t('errors.enterValidEmail'),
       });
       return;
     }
@@ -70,7 +70,7 @@ export const useSignupViewModel = (navigation: any) => {
       Toast.show({
         type: 'error',
         text1: t('missingData'),
-        text2: t('errors.selectSex', 'Please select your gender'),
+        text2: t('errors.selectSex'),
       });
       return;
     }

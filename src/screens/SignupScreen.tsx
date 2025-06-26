@@ -72,14 +72,14 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
         <Text style={styles.title}>{t('createAccount')}</Text>
         <TextInput
           style={styles.input}
-          placeholder={t('firstName') || 'First Name'}
+          placeholder={t('firstName')}
           value={firstName}
           onChangeText={setFirstName}
           autoCapitalize="words"
         />
         <TextInput
           style={styles.input}
-          placeholder={t('lastName') || 'Last Name'}
+          placeholder={t('lastName')}
           value={lastName}
           onChangeText={setLastName}
           autoCapitalize="words"
@@ -108,7 +108,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           <View style={styles.modalOverlay}>
             <TouchableOpacity style={StyleSheet.absoluteFill} onPress={() => setSexPickerVisible(false)} />
             <View style={styles.pickerContainer}>
-              <Text style={styles.pickerLabel}>{t('gender') || 'Gender'}</Text>
+              <Text style={styles.pickerLabel}>{t('gender')}</Text>
               <Picker
                 style={{ width: '100%' }}
                 selectedValue={sex}
@@ -117,8 +117,8 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
                   setSexPickerVisible(false);
                 }}
               >
-                <Picker.Item label={t('male') || 'Male'} value="male" />
-                <Picker.Item label={t('female') || 'Female'} value="female" />
+                <Picker.Item label={t('male')} value="male" />
+                <Picker.Item label={t('female')} value="female" />
               </Picker>
             </View>
           </View>
