@@ -1,13 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { useTranslation } from 'react-i18next';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import HomeStack from './stacks/HomeStack';
-import AppointmentsStack from './stacks/AppointmentsStack';
-import ProfileStack from './stacks/ProfileStack';
 import AuthStack from './stacks/AuthStack';
+import MainTabs from './stacks/MainTabs';
 
 /**
  * Defines the parameters for the authentication stack, including routes for Login, Signup, ForgotPassword, and OTP.
@@ -39,18 +36,6 @@ export type RootStackParamList = {
 };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator();
-
-const MainTabs = () => {
-  const { t } = useTranslation();
-  return (
-    <Tab.Navigator initialRouteName="HomeStackScreen" screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="HomeStackScreen" component={HomeStack} options={{ title: t('home') }} />
-      <Tab.Screen name="AppointmentsStackScreen" component={AppointmentsStack} options={{ title: t('appointments') }} />
-      <Tab.Screen name="ProfileStackScreen" component={ProfileStack} options={{ title: t('profile') }} />
-    </Tab.Navigator>
-  );
-};
 
 const AppNavigator = () => {
   const { t } = useTranslation();
