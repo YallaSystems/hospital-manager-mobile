@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { COLORS } from '../constants/colors';
+import { PATHS } from '../constants/paths';
 
 type ForgotPasswordScreenProps = NativeStackScreenProps<AuthStackParamList, 'ForgotPassword'>;
 
@@ -40,8 +41,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
 
     try {
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      navigation.navigate('Otp', { email: email.trim() });
+      navigation.navigate(PATHS.AUTH.OTP, { email: email.trim() });
     } catch (err) {
       setError(t('errors.failedToSendResetLink'));
     } finally {
@@ -56,7 +56,6 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
       <View style={styles.formContainer}>
         <Text style={styles.title}>{t('resetPassword')}</Text>
         <Text style={styles.description}>{t('enterEmailForReset')}</Text>
-        
         <TextInput
           style={styles.input}
           placeholder={t('email')}
@@ -69,9 +68,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
           autoCapitalize="none"
           editable={!loading}
         />
-        
         {error && <Text style={styles.errorText}>{error}</Text>}
-        
         <TouchableOpacity
           style={[styles.button, loading && styles.buttonDisabled]}
           onPress={handleSendResetLink}
@@ -82,7 +79,6 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
             <Text style={styles.buttonText}>{t('sendResetLink')}</Text>
           )}
         </TouchableOpacity>
-        
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}>

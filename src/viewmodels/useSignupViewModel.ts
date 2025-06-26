@@ -4,6 +4,7 @@ import Toast from 'react-native-toast-message';
 import axiosInstance from '../axiosInstance';
 import { URLS } from '../constants/urls';
 import { useTranslation } from 'react-i18next';
+import { PATHS } from '../constants/paths';
 
 /**
  * A view model hook for the Signup screen.
@@ -98,7 +99,7 @@ export const useSignupViewModel = (navigation: any) => {
         text1: t('success'),
         text2: sendOTPResponse.data.message,
       });
-      navigation.navigate('Otp', { email, password });
+      navigation.navigate(PATHS.AUTH.OTP, { email, password });
     } catch (err) {
       Toast.show({
         type: 'error',
@@ -133,7 +134,7 @@ export const useSignupViewModel = (navigation: any) => {
         text1: t('success'),
         text2: response.data.message || 'Registration successful',
       });
-      navigation.replace('Main', { screen: 'Home' });
+      navigation.replace(PATHS.Main, { screen: PATHS.MAIN.HomeStackScreen });
     } catch (err: any) {
       Toast.show({
         type: 'error',

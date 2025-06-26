@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { COLORS } from '../constants/colors';
+import { PATHS } from '../constants/paths';
 
 type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -55,7 +56,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
         />
         <TouchableOpacity
           style={styles.forgotPasswordButton}
-          onPress={() => navigation.navigate('ForgotPassword')}>
+          onPress={() => navigation.navigate(PATHS.AUTH.FORGOT_PASSWORD)}>
           <Text style={styles.forgotPasswordText}>{t('forgotPassword')}</Text>
         </TouchableOpacity>
         {error && <Text style={styles.errorText}>{error}</Text>}
@@ -71,7 +72,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.signupButton}
-          onPress={() => navigation.navigate('Signup')}>
+          onPress={() => navigation.navigate(PATHS.AUTH.SIGNUP)}>
           <Text style={styles.signupButtonText}>{t('dontHaveAccount')}{' '}<Text style={styles.signupLink}>{t('signup')}</Text></Text>
         </TouchableOpacity>
       </View>

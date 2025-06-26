@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import type { RootState } from '../../store';
 import { logout } from '../../store/slices/authSlice';
 import { useTranslation } from 'react-i18next';
+import { PATHS } from '../../constants/paths';
 
 const HeaderAuthButton = ({ navigation }: { navigation: any }) => {
   const { t } = useTranslation();
@@ -12,7 +13,7 @@ const HeaderAuthButton = ({ navigation }: { navigation: any }) => {
   if (isAuthenticated) {
     return <Button title={t('logout')} onPress={() => dispatch(logout())} />;
   } else {
-    return <Button title={t('login')} onPress={() => navigation.navigate('Auth', { screen: 'Login' })} />;
+    return <Button title={t('login')} onPress={() => navigation.navigate(PATHS.Auth)} />;
   }
 };
 
