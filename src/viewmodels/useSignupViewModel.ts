@@ -19,7 +19,8 @@ export const useSignupViewModel = (navigation: any) => {
   const [email, setEmail] = useState(``);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [sex, setSex] = useState('');
+  type Sex = 'male' | 'female' | '';
+  const [sex, setSex] = useState<Sex>('');
   const [role, setRole] = useState('patient');
   const dispatch = useDispatch();
   const { t } = useTranslation();
