@@ -37,6 +37,8 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     sex,
     setSex,
   } = useSignupViewModel(navigation);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const [sexPickerVisible, setSexPickerVisible] = useState(false);
 
@@ -114,22 +116,42 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
             </View>
           </View>
         </Modal>
-        <TextInput
-          style={styles.input}
-          placeholder={t('password', 'Password')}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          textContentType="none"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={t('confirmPassword', 'Confirm Password')}
-          value={confirmPassword}
-          onChangeText={setConfirmPassword}
-          secureTextEntry
-          textContentType="none"
-        />
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
+            placeholder={t('password')}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            textContentType="none"
+          />
+          <TouchableOpacity
+            style={styles.showHideButtonInside}
+            onPress={() => setShowPassword((prev) => !prev)}
+          >
+            <Text style={styles.showHideButtonText}>
+              {showPassword ? t('hide') : t('show')}
+            </Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
+            placeholder={t('confirmPassword')}
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+            secureTextEntry={!showConfirmPassword}
+            textContentType="none"
+          />
+          <TouchableOpacity
+            style={styles.showHideButtonInside}
+            onPress={() => setShowConfirmPassword((prev) => !prev)}
+          >
+            <Text style={styles.showHideButtonText}>
+              {showConfirmPassword ? t('hide') : t('show')}
+            </Text>
+          </TouchableOpacity>
+        </View>
         {/* Submit Button */}
         <SubmitButton
           onPress={handleSignup}
@@ -137,8 +159,8 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
         >
           {t('signup', 'Signup')}
         </SubmitButton>
-      </View>
-    </KeyboardAvoidingView>
+      </View >
+    </KeyboardAvoidingView >
   );
 };
 
@@ -186,6 +208,23 @@ const styles = StyleSheet.create({
     color: COLORS.white,
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  passwordInputContainer: {
+    marginBottom: 15,
+  },
+  showHideButtonInside: {
+    position: 'absolute',
+    right: 15,
+    top: 0,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  showHideButtonText: {
+    color: '#f4511e',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
   dropdown: {
     height: 50,

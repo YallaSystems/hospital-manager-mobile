@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -32,6 +32,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   } = useLoginViewModel(navigation);
   const { t } = useTranslation();
   const isFormValid = email.trim() && password.trim();
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -48,15 +49,26 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           autoCapitalize="none"
           editable={!loading}
         />
-        <TextInput
-          style={styles.input}
-          placeholder={t('password', 'Password')}
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          editable={!loading}
-          textContentType="none"
-        />
+        <View style={styles.passwordInputContainer}>
+          <TextInput
+            style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
+            placeholder={t('password', 'Password')}
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+            editable={!loading}
+            textContentType="none"
+          />
+          <TouchableOpacity
+            style={styles.showHideButtonInside}
+            onPress={() => setShowPassword((prev) => !prev)}
+            disabled={loading}
+          >
+            <Text style={styles.showHideButtonText}>
+              {showPassword ? t('hide') : t('show')}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <TouchableOpacity
           style={styles.forgotPasswordButton}
           onPress={() => navigation.navigate(PATHS.AUTH.FORGOT_PASSWORD)}>
@@ -146,6 +158,23 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: COLORS.primary,
     fontWeight: '500',
+  },
+  passwordInputContainer: {
+    marginBottom: 15,
+  },
+  showHideButtonInside: {
+    position: 'absolute',
+    right: 15,
+    top: 0,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
+  },
+  showHideButtonText: {
+    color: '#f4511e',
+    fontWeight: 'bold',
+    fontSize: 14,
   },
 });
 

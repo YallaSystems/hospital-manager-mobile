@@ -28,6 +28,8 @@
   "resetPassword": "Reset Password",
   "enterEmailForReset": "Enter your email address to reset your password",
   "sendResetLink": "Send Reset Link",
+  "show": "Show",
+  "hide": "Hide",
   "errors": {
     "enterYourEmail": "Please enter your email address",
     "enterValidEmail": "Please enter a valid email address",
