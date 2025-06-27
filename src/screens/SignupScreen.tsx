@@ -16,6 +16,7 @@ import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { useSignupViewModel } from '../viewmodels/useSignupViewModel';
 import { Picker } from '@react-native-picker/picker';
 import { COLORS } from '../constants/colors';
+import SubmitButton from '../components/SubmitButton';
 
 type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -47,16 +48,6 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     sex &&
     password.length >= 8 &&
     password === confirmPassword;
-
-  const submitButtonStyle = (isEnabled: boolean): ViewStyle => ({
-    backgroundColor: isEnabled ? COLORS.primary : COLORS.disabled,
-    height: 50,
-    borderRadius: 8,
-    justifyContent: 'center' as ViewStyle['justifyContent'],
-    alignItems: 'center' as ViewStyle['alignItems'],
-    marginTop: 15,
-    opacity: isEnabled ? 1 : 0.7,
-  });
 
   const pickerData: Record<'male' | 'female' | '', string> = {
     male: 'male',
@@ -139,13 +130,13 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           secureTextEntry
           textContentType="none"
         />
-        <TouchableOpacity
-          style={submitButtonStyle(!!isFormValid)}
+        {/* Submit Button */}
+        <SubmitButton
           onPress={handleSignup}
           disabled={!isFormValid}
         >
-          <Text style={styles.buttonText}>{t('signup')}</Text>
-        </TouchableOpacity>
+          {t('signup')}
+        </SubmitButton>
       </View>
     </KeyboardAvoidingView>
   );

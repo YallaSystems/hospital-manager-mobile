@@ -16,6 +16,7 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { COLORS } from '../constants/colors';
 import { PATHS } from '../constants/paths';
+import SubmitButton from '../components/SubmitButton';
 
 type LoginScreenProps = NativeStackScreenProps<AuthStackParamList, 'Login'>;
 
@@ -31,16 +32,6 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
   } = useLoginViewModel(navigation);
   const { t } = useTranslation();
   const isFormValid = email.trim() && password.trim();
-
-  const submitButtonStyle = (isEnabled: boolean): ViewStyle => ({
-    backgroundColor: isEnabled ? COLORS.primary : COLORS.disabled,
-    height: 50,
-    borderRadius: 8,
-    justifyContent: 'center' as ViewStyle['justifyContent'],
-    alignItems: 'center' as ViewStyle['alignItems'],
-    marginTop: 15,
-    opacity: isEnabled ? 1 : 0.7,
-  });
 
   return (
     <KeyboardAvoidingView
@@ -72,16 +63,13 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           <Text style={styles.forgotPasswordText}>{t('forgotPassword')}</Text>
         </TouchableOpacity>
         {error && <Text style={styles.errorText}>{error}</Text>}
-        <TouchableOpacity
-          style={submitButtonStyle(!(loading || !isFormValid))}
+        <SubmitButton
           onPress={handleLogin}
-          disabled={loading || !isFormValid}>
-          {loading ? (
-            <ActivityIndicator color={COLORS.white} />
-          ) : (
-            <Text style={styles.buttonText}>{t('login')}</Text>
-          )}
-        </TouchableOpacity>
+          disabled={loading || !isFormValid}
+          loading={loading}
+        >
+          {t('login')}
+        </SubmitButton>
         <TouchableOpacity
           style={styles.signupButton}
           onPress={() => navigation.navigate(PATHS.AUTH.SIGNUP)}>
