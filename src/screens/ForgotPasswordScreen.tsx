@@ -29,14 +29,14 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
 
   const handleSendResetLink = async () => {
     if (!email.trim()) {
-      setError(t('errors.enterYourEmail'));
+      setError(t('errors.enterYourEmail', 'Enter your email'));
       return;
     }
 
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
-      setError(t('errors.enterValidEmail'));
+      setError(t('errors.enterValidEmail', 'Enter a valid email'));
       return;
     }
 
@@ -47,7 +47,7 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       navigation.navigate(PATHS.AUTH.OTP, { email: email.trim() });
     } catch (err) {
-      setError(t('errors.failedToSendResetLink'));
+      setError(t('errors.failedToSendResetLink', 'Failed to send reset link'));
     } finally {
       setLoading(false);
     }
@@ -58,11 +58,11 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>{t('resetPassword')}</Text>
-        <Text style={styles.description}>{t('enterEmailForReset')}</Text>
+        <Text style={styles.title}>{t('resetPassword', 'Reset Password')}</Text>
+        <Text style={styles.description}>{t('enterEmailForReset', 'Enter your email address to reset your password')}</Text>
         <TextInput
           style={styles.input}
-          placeholder={t('email')}
+          placeholder={t('email', 'Email')}
           value={email}
           onChangeText={(text) => {
             setEmail(text);
@@ -78,12 +78,12 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
           disabled={loading || !isFormValid}
           loading={loading}
         >
-          {t('sendResetLink')}
+          {t('sendResetLink', 'Send Reset Link')}
         </SubmitButton>
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => navigation.goBack()}>
-          <Text style={styles.backButtonText}>{t('back')}</Text>
+          <Text style={styles.backButtonText}>{t('back', 'Back')}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

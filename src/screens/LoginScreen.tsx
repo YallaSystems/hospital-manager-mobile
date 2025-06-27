@@ -38,10 +38,10 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>{t('welcomeBack')}</Text>
+        <Text style={styles.title}>{t('welcomeBack', 'Welcome Back')}</Text>
         <TextInput
           style={styles.input}
-          placeholder={t('email')}
+          placeholder={t('email', 'Email')}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -50,7 +50,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
         />
         <TextInput
           style={styles.input}
-          placeholder={t('password')}
+          placeholder={t('password', 'Password')}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -60,7 +60,7 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
         <TouchableOpacity
           style={styles.forgotPasswordButton}
           onPress={() => navigation.navigate(PATHS.AUTH.FORGOT_PASSWORD)}>
-          <Text style={styles.forgotPasswordText}>{t('forgotPassword')}</Text>
+          <Text style={styles.forgotPasswordText}>{t('forgotPassword', 'Forgot Password?')}</Text>
         </TouchableOpacity>
         {error && <Text style={styles.errorText}>{error}</Text>}
         <SubmitButton
@@ -68,12 +68,12 @@ const LoginScreen = ({ navigation }: LoginScreenProps) => {
           disabled={loading || !isFormValid}
           loading={loading}
         >
-          {t('login')}
+          {t('login', 'Login')}
         </SubmitButton>
         <TouchableOpacity
           style={styles.signupButton}
           onPress={() => navigation.navigate(PATHS.AUTH.SIGNUP)}>
-          <Text style={styles.signupButtonText}>{t('dontHaveAccount')}{' '}<Text style={styles.signupLink}>{t('signup')}</Text></Text>
+          <Text style={styles.signupButtonText}>{t('dontHaveAccount', "Don't have an account?")}{' '}<Text style={styles.signupLink}>{t('signup', 'Signup')}</Text></Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

@@ -39,9 +39,9 @@ function App(): React.JSX.Element {
           <MaintenanceModal
             visible={isMaintenanceModalVisible}
             onRetry={() => performHealthCheck(setMaintenanceModalVisible, t)}
-            title={t('healthCheck.maintenanceTitle')}
-            message={t('healthCheck.maintenanceMessage')}
-            retryButtonText={t('healthCheck.retryButton')}
+            title={t('healthCheck.maintenanceTitle', 'System Under Maintenance')}
+            message={t('healthCheck.maintenanceMessage', 'We are currently performing maintenance. Please try again later.')}
+            retryButtonText={t('healthCheck.retryButton', 'Retry')}
           />
         </SafeAreaProvider>
       </PersistGate>

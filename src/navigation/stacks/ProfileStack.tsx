@@ -16,7 +16,7 @@ const ProfileStack = () => {
         component={ProfileScreen}
         options={({ navigation }) => ({
           headerShown: true,
-          title: t('profile'),
+          title: t('profile', 'Profile'),
           headerRight: () => <HeaderAuthButton navigation={navigation} />,
         })}
       />

@@ -11,9 +11,9 @@ const HeaderAuthButton = ({ navigation }: { navigation: any }) => {
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
   if (isAuthenticated) {
-    return <Button title={t('logout')} onPress={() => dispatch(logout())} />;
+    return <Button title={t('logout', 'Logout')} onPress={() => dispatch(logout())} />;
   } else {
-    return <Button title={t('login')} onPress={() => navigation.navigate(PATHS.Auth)} />;
+    return <Button title={t('login', 'Login')} onPress={() => navigation.navigate(PATHS.Auth)} />;
   }
 };
 

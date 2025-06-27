@@ -36,10 +36,10 @@ const OtpScreen = ({ route }: OtpScreenProps) => {
         // Here you would typically make an API call to verify OTP and reset password
         Alert.alert('Success', 'Password reset OTP verified successfully!');
       } else {
-        Alert.alert(t('error'), t('invalidOtp'));
+        Alert.alert(t('error', 'An error occurred'), t('invalidOtp', 'Invalid OTP. Please try again.'));
       }
     } else {
-      Alert.alert(t('error'), t('invalidOtp'));
+      Alert.alert(t('error', 'An error occurred'), t('invalidOtp', 'Invalid OTP. Please try again.'));
     }
   };
 
@@ -48,8 +48,8 @@ const OtpScreen = ({ route }: OtpScreenProps) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>{t('otpVerification')}</Text>
-        <Text style={styles.subtitle}>{t('enterOtp', { email })}</Text>
+        <Text style={styles.title}>{t('otpVerification', 'OTP Verification')}</Text>
+        <Text style={styles.subtitle}>{t('enterOtp', 'Enter the OTP sent to {{email}}', { email })}</Text>
         <TextInput
           ref={otpInput}
           placeholder="- - - - - -"
@@ -62,7 +62,7 @@ const OtpScreen = ({ route }: OtpScreenProps) => {
           textContentType="none"
         />
         <TouchableOpacity style={styles.button} onPress={handleOtpSubmit}>
-          <Text style={styles.buttonText}>{t('verify')}</Text>
+          <Text style={styles.buttonText}>{t('verify', 'Verify')}</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>

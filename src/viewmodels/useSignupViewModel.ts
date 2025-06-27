@@ -35,24 +35,24 @@ export const useSignupViewModel = (navigation: any) => {
     if (!firstName.trim()) {
       Toast.show({
         type: 'error',
-        text1: t('missingData'),
-        text2: t('errors.enterFirstName'),
+        text1: t('missingData', 'Missing Data'),
+        text2: t('errors.enterFirstName', 'Please enter your first name'),
       });
       return;
     }
     if (!lastName.trim()) {
       Toast.show({
         type: 'error',
-        text1: t('missingData'),
-        text2: t('errors.enterLastName'),
+        text1: t('missingData', 'Missing Data'),
+        text2: t('errors.enterLastName', 'Please enter your last name'),
       });
       return;
     }
     if (!email.trim()) {
       Toast.show({
         type: 'error',
-        text1: t('missingData'),
-        text2: t('errors.enterYourEmail'),
+        text1: t('missingData', 'Missing Data'),
+        text2: t('errors.enterYourEmail', 'Please enter your email address'),
       });
       return;
     }
@@ -61,32 +61,32 @@ export const useSignupViewModel = (navigation: any) => {
     if (!emailRegex.test(email.trim())) {
       Toast.show({
         type: 'error',
-        text1: t('missingData'),
-        text2: t('errors.enterValidEmail'),
+        text1: t('missingData', 'Missing Data'),
+        text2: t('errors.enterValidEmail', 'Please enter a valid email address'),
       });
       return;
     }
     if (!sex) {
       Toast.show({
         type: 'error',
-        text1: t('missingData'),
-        text2: t('errors.selectSex'),
+        text1: t('missingData', 'Missing Data'),
+        text2: t('errors.selectSex', 'Please select your gender'),
       });
       return;
     }
     if (password.length < 8) {
       Toast.show({
         type: 'error',
-        text1: t('missingData'),
-        text2: t('errors.passwordTooShort'),
+        text1: t('missingData', 'Missing Data'),
+        text2: t('errors.passwordTooShort', 'Password must be at least 8 characters long'),
       });
       return;
     }
     if (password !== confirmPassword) {
       Toast.show({
         type: 'error',
-        text1: t('missingData'),
-        text2: t('errors.passwordsDoNotMatch'),
+        text1: t('missingData', 'Missing Data'),
+        text2: t('errors.passwordsDoNotMatch', 'Passwords do not match'),
       });
       return;
     }
@@ -96,15 +96,15 @@ export const useSignupViewModel = (navigation: any) => {
       const sendOTPResponse = await axiosInstance.post(URLS.sendOTP, { email: email.trim() });
       Toast.show({
         type: 'success',
-        text1: t('success'),
+        text1: t('success', 'Success'),
         text2: sendOTPResponse.data.message,
       });
       navigation.navigate(PATHS.AUTH.OTP, { email, password });
     } catch (err) {
       Toast.show({
         type: 'error',
-        text1: t('error'),
-        text2: t('errors.failedToSendResetLink'),
+        text1: t('error', 'An error occurred'),
+        text2: t('errors.failedToSendResetLink', 'Failed to send reset link. Please try again.'),
       });
     }
   }, [firstName, lastName, email, sex, password, confirmPassword, navigation, t]);
@@ -131,15 +131,15 @@ export const useSignupViewModel = (navigation: any) => {
       );
       Toast.show({
         type: 'success',
-        text1: t('success'),
+        text1: t('success', 'Success'),
         text2: response.data.message || 'Registration successful',
       });
       navigation.replace(PATHS.Main, { screen: PATHS.MAIN.HomeStackScreen });
     } catch (err: any) {
       Toast.show({
         type: 'error',
-        text1: t('error'),
-        text2: err?.response?.data?.message || t('errors.failedToRegister'),
+        text1: t('error', 'An error occurred'),
+        text2: err?.response?.data?.message || t('errors.failedToRegister', 'Registration failed'),
       });
     }
   };

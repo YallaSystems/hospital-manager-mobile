@@ -1,10 +1,11 @@
 import axiosInstance from '../axiosInstance';
 import { URLS } from '../constants/urls';
 import Toast from 'react-native-toast-message';
+import type { TFunction } from 'i18next';
 
 export const performHealthCheck = (
   setMaintenanceModalVisible: (visible: boolean) => void,
-  t: (key: string) => string
+  t: TFunction
 ) => {
   axiosInstance.get(URLS.healthCheck)
     .then(res => {
@@ -15,8 +16,8 @@ export const performHealthCheck = (
       setMaintenanceModalVisible(true);
       Toast.show({
         type: 'error',
-        text1: t('healthCheck.failedToastTitle'),
-        text2: t('healthCheck.failedToastMessage'),
+        text1: t('healthCheck.failedToastTitle', { defaultValue: 'Error' }),
+        text2: t('healthCheck.failedToastMessage', { defaultValue: 'Health check failed' }),
         position: 'bottom'
       });
     });

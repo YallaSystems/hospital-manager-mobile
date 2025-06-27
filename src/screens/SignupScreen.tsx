@@ -60,24 +60,24 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}>
       <View style={styles.formContainer}>
-        <Text style={styles.title}>{t('createAccount')}</Text>
+        <Text style={styles.title}>{t('createAccount', 'Create Account')}</Text>
         <TextInput
           style={styles.input}
-          placeholder={t('firstName')}
+          placeholder={t('firstName', 'First Name')}
           value={firstName}
           onChangeText={setFirstName}
           autoCapitalize="words"
         />
         <TextInput
           style={styles.input}
-          placeholder={t('lastName')}
+          placeholder={t('lastName', 'Last Name')}
           value={lastName}
           onChangeText={setLastName}
           autoCapitalize="words"
         />
         <TextInput
           style={styles.input}
-          placeholder={t('email')}
+          placeholder={t('email', 'Email')}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -88,7 +88,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           onPress={() => setSexPickerVisible(true)}
         >
           <Text style={sexPickerText(sex)}>
-            {t(pickerData[sex])}
+            {t(pickerData[sex], pickerData[sex] === 'male' ? 'Male' : pickerData[sex] === 'female' ? 'Female' : 'Select Gender')}
           </Text>
         </TouchableOpacity>
         <Modal
@@ -99,7 +99,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           <View style={styles.modalOverlay}>
             <TouchableOpacity style={StyleSheet.absoluteFill} onPress={() => setSexPickerVisible(false)} />
             <View style={styles.pickerContainer}>
-              <Text style={styles.pickerLabel}>{t('gender')}</Text>
+              <Text style={styles.pickerLabel}>{t('gender', 'Gender')}</Text>
               <Picker
                 style={{ width: '100%' }}
                 selectedValue={sex}
@@ -108,15 +108,15 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
                   setSexPickerVisible(false);
                 }}
               >
-                <Picker.Item label={t('male')} value="male" />
-                <Picker.Item label={t('female')} value="female" />
+                <Picker.Item label={t('male', 'Male')} value="male" />
+                <Picker.Item label={t('female', 'Female')} value="female" />
               </Picker>
             </View>
           </View>
         </Modal>
         <TextInput
           style={styles.input}
-          placeholder={t('password')}
+          placeholder={t('password', 'Password')}
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -124,7 +124,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
         />
         <TextInput
           style={styles.input}
-          placeholder={t('confirmPassword')}
+          placeholder={t('confirmPassword', 'Confirm Password')}
           value={confirmPassword}
           onChangeText={setConfirmPassword}
           secureTextEntry
@@ -135,7 +135,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           onPress={handleSignup}
           disabled={!isFormValid}
         >
-          {t('signup')}
+          {t('signup', 'Signup')}
         </SubmitButton>
       </View>
     </KeyboardAvoidingView>

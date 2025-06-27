@@ -5,13 +5,13 @@ import { useTranslation } from 'react-i18next';
 import { COLORS } from '../constants/colors';
 
 const HomeScreen = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   // Currently no state, but hook is ready for future logic
   useHomeViewModel();
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>{t('welcome')}</Text>
+      <Text style={styles.text}>{t('welcome', 'Welcome to Hospital Manager')}</Text>
     </View>
   );
 };
