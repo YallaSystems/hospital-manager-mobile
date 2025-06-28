@@ -6,6 +6,7 @@ import { URLS } from '../constants/urls';
 import { useTranslation } from 'react-i18next';
 import { PATHS } from '../constants/paths';
 import { signupRequest, signupSuccess, signupFailure } from '../store/slices/authSlice';
+import { setUserFromSignup } from '../store/slices/userSlice';
 import { RootState } from '../store';
 
 /**
@@ -95,9 +96,6 @@ export const useSignupViewModel = (navigation: any) => {
     try {
       const sendOTPResponse = await axiosInstance.post(URLS.sendOTP, { email: email.trim() });
       
-      // Dispatch signup success action
-      dispatch(signupSuccess());
-      
       Alert.alert(
         t('success', 'Success'),
         sendOTPResponse.data.message
@@ -146,6 +144,7 @@ export const useSignupViewModel = (navigation: any) => {
         t('success', 'Success'),
         response.data.message || 'Registration successful'
       );
+      dispatch(setUserFromSignup(response.data));
       navigation.replace(PATHS.Main, { screen: PATHS.MAIN.HomeStackScreen });
     } catch (err: any) {
       // Dispatch signup failure action

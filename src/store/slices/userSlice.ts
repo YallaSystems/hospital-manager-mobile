@@ -42,7 +42,7 @@ export interface User {
  * @property loading - Whether a user data request is in progress
  * @property error - Any error message from the last user operation
  */
-interface UserState {
+export interface UserState {
   user: User | null;
   loading: boolean;
   error: string | null;
@@ -68,6 +68,7 @@ const initialState: UserState = {
  * - setError: Sets error state
  * - clearError: Clears error state
  * - updateTokens: Updates authentication tokens
+ * - setUserFromSignup: Sets user data from signup response
  */
 const userSlice = createSlice({
   name: 'user',
@@ -144,6 +145,40 @@ const userSlice = createSlice({
       }
       state.error = null;
     },
+    /**
+     * Sets user data from signup response
+     * @param state - Current state
+     * @param action - Payload containing signup response data
+     */
+    setUserFromSignup: (state, action: PayloadAction<{
+      message: string;
+      user: {
+        id: string;
+        email: string;
+        firstName: string;
+        lastName: string;
+        role: string;
+      };
+      accessToken: string;
+      refreshToken: string;
+      expiresIn: number;
+    }>) => {
+      const { user, accessToken, refreshToken, expiresIn } = action.payload;
+      const expireTimeStamp = new Date(Date.now() + expiresIn * 60 * 1000); // Convert minutes to milliseconds
+      
+      state.user = {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        role: user.role,
+        accessToken,
+        refreshToken,
+        expiresIn,
+        expireTimeStamp,
+      };
+      state.error = null;
+    },
   },
 });
 
@@ -155,6 +190,7 @@ export const {
   setError,
   clearError,
   updateTokens,
+  setUserFromSignup,
 } = userSlice.actions;
 
 export default userSlice.reducer; 
