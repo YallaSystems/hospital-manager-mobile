@@ -33,18 +33,56 @@ axiosInstance.interceptors.response.use(
 
     // Use maxRetryCount from config, default to 3
     const maxRetryCount = config?.maxRetryCount ?? 3;
+    const currentRetryCount = config.__retryCount || 0;
+
+    // Check if we should retry based on error type
+    const isTimeoutError = error.code === 'ECONNABORTED' || error.message.includes('timeout');
+    const isNetworkError = !error.response;
     const status = error.response?.status;
-    const shouldRetry = !status || (status >= 500 && status < 600);
+    const isServerError = status >= 500 && status < 600;
+    const shouldRetry = isTimeoutError || isNetworkError || isServerError;
+
+    // Keeping this console log as comment to debug axios errors easily in future
+
+    // console.log('Request error:', {
+    //   url: config?.url,
+    //   method: config?.method,
+    //   message: error.message,
+    //   code: error.code,
+    //   status: status,
+    //   isTimeoutError,
+    //   isNetworkError,
+    //   isServerError,
+    //   shouldRetry,
+    //   currentRetryCount,
+    //   maxRetryCount
+    // });
 
     // Retry logic
-    if (shouldRetry || !config || config.__retryCount >= maxRetryCount) {
-      // Show alert for error message
-      const message = error?.response?.data?.message || error?.message || 'Network error';
-      Alert.alert('Error', message);
-      return Promise.reject(error);
+    if (shouldRetry && config && currentRetryCount < maxRetryCount) {
+      config.__retryCount = currentRetryCount + 1;
+      // Retrying request (${config.__retryCount}/${maxRetryCount}) for URL: ${config.url}
+
+      // Add exponential backoff delay for retries
+      const delay = Math.min(1000 * Math.pow(2, currentRetryCount), 5000); // Max 5 seconds
+      // Waiting ${delay}ms before retry...
+      await new Promise(resolve => setTimeout(resolve, delay));
+
+      return axiosInstance(config);
     }
-    config.__retryCount = config.__retryCount ? config.__retryCount + 1 : 1;
-    return axiosInstance(config);
+
+    // Show alert for error message
+    let message = '';
+
+    if (error?.response?.data?.message) {
+      message = error.response.data.message;
+    } else if (error?.message) {
+      message = error.message;
+    }
+
+    if (!isTimeoutError) // Do not show alert in case of timeout
+      Alert.alert('Error', message);
+    return Promise.reject(error);
   }
 );
 
