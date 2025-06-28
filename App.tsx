@@ -12,7 +12,6 @@ import {PersistGate} from 'redux-persist/integration/react';
 import AppNavigator from './src/navigation/AppNavigator';
 import {store, persistor} from './src/store';
 import './src/i18n';
-import Toast from 'react-native-toast-message';
 import axiosInstance from './src/axiosInstance';
 import { URLS } from './src/constants/urls';
 import { Modal, View, Text, StyleSheet, Button } from 'react-native';
@@ -35,7 +34,6 @@ function App(): React.JSX.Element {
         {/* SafeAreaProvider is used to handle the safe area insets */}
         <SafeAreaProvider>
           <AppNavigator />
-          <Toast />
           <MaintenanceModal
             visible={isMaintenanceModalVisible}
             onRetry={() => performHealthCheck(setMaintenanceModalVisible, t)}

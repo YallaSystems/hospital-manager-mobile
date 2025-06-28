@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
-import Toast from 'react-native-toast-message';
+import { Alert } from 'react-native';
 import axiosInstance from '../axiosInstance';
 import { URLS } from '../constants/urls';
 import { useTranslation } from 'react-i18next';
@@ -33,79 +33,70 @@ export const useSignupViewModel = (navigation: any) => {
    */
   const handleSignup = useCallback(async () => {
     if (!firstName.trim()) {
-      Toast.show({
-        type: 'error',
-        text1: t('missingData', 'Missing Data'),
-        text2: t('errors.enterFirstName', 'Please enter your first name'),
-      });
+      Alert.alert(
+        t('missingData', 'Missing Data'),
+        t('errors.enterFirstName', 'Please enter your first name')
+      );
       return;
     }
     if (!lastName.trim()) {
-      Toast.show({
-        type: 'error',
-        text1: t('missingData', 'Missing Data'),
-        text2: t('errors.enterLastName', 'Please enter your last name'),
-      });
+      Alert.alert(
+        t('missingData', 'Missing Data'),
+        t('errors.enterLastName', 'Please enter your last name')
+      );
       return;
     }
     if (!email.trim()) {
-      Toast.show({
-        type: 'error',
-        text1: t('missingData', 'Missing Data'),
-        text2: t('errors.enterYourEmail', 'Please enter your email address'),
-      });
+      Alert.alert(
+        t('missingData', 'Missing Data'),
+        t('errors.enterYourEmail', 'Please enter your email address')
+      );
       return;
     }
     // Block plus addressing: local part must not contain '+'
     const emailRegex = /^[^\s@+]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
-      Toast.show({
-        type: 'error',
-        text1: t('missingData', 'Missing Data'),
-        text2: t('errors.enterValidEmail', 'Please enter a valid email address'),
-      });
+      Alert.alert(
+        t('missingData', 'Missing Data'),
+        t('errors.enterValidEmail', 'Please enter a valid email address')
+      );
       return;
     }
     if (!sex) {
-      Toast.show({
-        type: 'error',
-        text1: t('missingData', 'Missing Data'),
-        text2: t('errors.selectSex', 'Please select your gender'),
-      });
+      Alert.alert(
+        t('missingData', 'Missing Data'),
+        t('errors.selectSex', 'Please select your gender')
+      );
       return;
     }
     if (password.length < 8) {
-      Toast.show({
-        type: 'error',
-        text1: t('missingData', 'Missing Data'),
-        text2: t('errors.passwordTooShort', 'Password must be at least 8 characters long'),
-      });
+      Alert.alert(
+        t('missingData', 'Missing Data'),
+        t('errors.passwordTooShort', 'Password must be at least 8 characters long')
+      );
       return;
     }
     if (password !== confirmPassword) {
-      Toast.show({
-        type: 'error',
-        text1: t('missingData', 'Missing Data'),
-        text2: t('errors.passwordsDoNotMatch', 'Passwords do not match'),
-      });
+      Alert.alert(
+        t('missingData', 'Missing Data'),
+        t('errors.passwordsDoNotMatch', 'Passwords do not match')
+      );
       return;
     }
     // Dispatch signup action here
     // For now, let's navigate to OTP as an example
     try {
       const sendOTPResponse = await axiosInstance.post(URLS.sendOTP, { email: email.trim() });
-      Toast.show({
-        type: 'success',
-        text1: t('success', 'Success'),
-        text2: sendOTPResponse.data.message,
-      });
+      Alert.alert(
+        t('success', 'Success'),
+        sendOTPResponse.data.message
+      );
       navigation.navigate(PATHS.AUTH.OTP, { email, password });
     } catch (err) {
-      Toast.show({
-        type: 'error',
-        text1: t('error', 'An error occurred'),
-        text2: t('errors.failedToSendResetLink', 'Failed to send reset link. Please try again.'),
-      });
+      Alert.alert(
+        t('error', 'An error occurred'),
+        t('errors.failedToSendResetLink', 'Failed to send reset link. Please try again.')
+      );
     }
   }, [firstName, lastName, email, sex, password, confirmPassword, navigation, t]);
 
@@ -129,18 +120,16 @@ export const useSignupViewModel = (navigation: any) => {
           },
         }
       );
-      Toast.show({
-        type: 'success',
-        text1: t('success', 'Success'),
-        text2: response.data.message || 'Registration successful',
-      });
+      Alert.alert(
+        t('success', 'Success'),
+        response.data.message || 'Registration successful'
+      );
       navigation.replace(PATHS.Main, { screen: PATHS.MAIN.HomeStackScreen });
     } catch (err: any) {
-      Toast.show({
-        type: 'error',
-        text1: t('error', 'An error occurred'),
-        text2: err?.response?.data?.message || t('errors.failedToRegister', 'Registration failed'),
-      });
+      Alert.alert(
+        t('error', 'An error occurred'),
+        err?.response?.data?.message || t('errors.failedToRegister', 'Registration failed')
+      );
     }
   };
 

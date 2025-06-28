@@ -1,5 +1,5 @@
 import axios, { InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
-import Toast from 'react-native-toast-message';
+import { Alert } from 'react-native';
 import { store } from './store';
 
 // Create an axios instance
@@ -25,7 +25,7 @@ axiosInstance.interceptors.request.use(
 // Example: axiosInstance.get(url, { maxRetryCount: 5 })
 // If not provided, the default retry count is 3.
 
-// Response interceptor for retry and error toast
+// Response interceptor for retry and error handling
 axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -38,14 +38,9 @@ axiosInstance.interceptors.response.use(
 
     // Retry logic
     if (shouldRetry || !config || config.__retryCount >= maxRetryCount) {
-      // Show toast for error message
+      // Show alert for error message
       const message = error?.response?.data?.message || error?.message || 'Network error';
-      Toast.show({
-        type: 'error',
-        text1: 'Error',
-        text2: message,
-        position: 'bottom'
-      });
+      Alert.alert('Error', message);
       return Promise.reject(error);
     }
     config.__retryCount = config.__retryCount ? config.__retryCount + 1 : 1;

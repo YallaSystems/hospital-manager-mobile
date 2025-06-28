@@ -44,8 +44,8 @@
     "maintenanceTitle": "النظام تحت الصيانة",
     "maintenanceMessage": "نحن نقوم حالياً بأعمال صيانة. يرجى المحاولة لاحقاً.",
     "retryButton": "إعادة المحاولة",
-    "failedToastTitle": "خطأ",
-    "failedToastMessage": "فشل فحص الصحة"
+    "failedTitle": "خطأ",
+    "failedMessage": "فشل فحص الصحة"
   },
   "selectSex": "اختر الجنس",
   "male": "ذكر",

@@ -1,6 +1,6 @@
 import axiosInstance from '../axiosInstance';
 import { URLS } from '../constants/urls';
-import Toast from 'react-native-toast-message';
+import { Alert } from 'react-native';
 import type { TFunction } from 'i18next';
 
 export const performHealthCheck = (
@@ -14,11 +14,9 @@ export const performHealthCheck = (
     })
     .catch(err => {
       setMaintenanceModalVisible(true);
-      Toast.show({
-        type: 'error',
-        text1: t('healthCheck.failedToastTitle', { defaultValue: 'Error' }),
-        text2: t('healthCheck.failedToastMessage', { defaultValue: 'Health check failed' }),
-        position: 'bottom'
-      });
+      Alert.alert(
+        t('healthCheck.failedTitle', { defaultValue: 'Error' }),
+        t('healthCheck.failedMessage', { defaultValue: 'Health check failed' })
+      );
     });
 }; 

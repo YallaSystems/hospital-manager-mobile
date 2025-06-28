@@ -44,8 +44,8 @@
     "maintenanceTitle": "System Under Maintenance",
     "maintenanceMessage": "We are currently performing maintenance. Please try again later.",
     "retryButton": "Retry",
-    "failedToastTitle": "Error",
-    "failedToastMessage": "Health check failed"
+    "failedTitle": "Error",
+    "failedMessage": "Health check failed"
   },
   "selectSex": "Select Gender",
   "male": "Male",
