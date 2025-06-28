@@ -66,6 +66,7 @@ const OtpScreen = ({ route, navigation }: OtpScreenProps) => {
           onPress={handleOtpSubmit}
           disabled={otp.length !== 6}
           loading={signupLoading}
+          style={styles.submitBtnStyle}
         >
           {t('verify', 'Verify')}
         </SubmitButton>
@@ -75,6 +76,9 @@ const OtpScreen = ({ route, navigation }: OtpScreenProps) => {
 };
 
 const styles = StyleSheet.create({
+  submitBtnStyle: {
+    alignSelf: 'stretch'
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS.white,

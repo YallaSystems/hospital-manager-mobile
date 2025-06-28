@@ -7,9 +7,10 @@ interface SubmitButtonProps {
   disabled?: boolean;
   loading?: boolean;
   children: React.ReactNode;
+  style?: ViewStyle;
 }
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, disabled = false, loading = false, children }) => {
+const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, disabled = false, loading = false, children, style }) => {
   const isEnabled = !disabled && !loading;
   const buttonStyle: ViewStyle = {
     backgroundColor: isEnabled ? COLORS.primary : COLORS.disabled,
@@ -19,6 +20,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, disabled = false, 
     alignItems: 'center',
     marginTop: 15,
     opacity: isEnabled ? 1 : 0.7,
+    ...(style || {}),
   };
 
   return (
