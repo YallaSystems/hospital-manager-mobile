@@ -134,7 +134,7 @@ export const useSignupViewModel = (navigation: any) => {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: Otp,
+            Authorization: `X-OTP ${email}:${Otp}`,
           },
         }
       );
