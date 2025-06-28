@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
 import { useTranslation } from 'react-i18next';
 import { COLORS } from '../constants/colors';
+import CustomDropdown from '../components/CustomDropdown';
 
 const ProfileScreen = () => {
   const { t, i18n } = useTranslation();
@@ -13,18 +13,22 @@ const ProfileScreen = () => {
     i18n.changeLanguage(lang);
   };
 
+  const languageOptions = [
+    { label: 'English', value: 'en' },
+    { label: 'العربية', value: 'ar' },
+  ];
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{t('profile', 'Profile')}</Text>
       <Text style={styles.label}>{t('language', 'Language')}</Text>
-      <Picker
-        selectedValue={selectedLanguage}
-        style={styles.picker}
+      <CustomDropdown
+        value={selectedLanguage}
         onValueChange={handleLanguageChange}
-      >
-        <Picker.Item label="English" value="en" />
-        <Picker.Item label="العربية" value="ar" />
-      </Picker>
+        options={languageOptions}
+        placeholder="Select Language"
+        style={styles.dropdown}
+      />
     </View>
   );
 };
@@ -45,9 +49,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 10,
   },
-  picker: {
+  dropdown: {
     width: 200,
-    height: 44,
   },
 });
 

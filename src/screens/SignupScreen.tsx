@@ -7,16 +7,14 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Modal,
-  ViewStyle,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { useSignupViewModel } from '../viewmodels/useSignupViewModel';
-import { Picker } from '@react-native-picker/picker';
 import { COLORS } from '../constants/colors';
 import SubmitButton from '../components/SubmitButton';
+import CustomDropdown from '../components/CustomDropdown';
 
 type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -40,8 +38,6 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const [sexPickerVisible, setSexPickerVisible] = useState(false);
-
   const isFormValid =
     firstName.trim() &&
     lastName.trim() &&
@@ -51,10 +47,13 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     password.length >= 8 &&
     password === confirmPassword;
 
-  const pickerData: Record<'male' | 'female' | '', string> = {
-    male: 'male',
-    female: 'female',
-    '': 'selectSex',
+  const genderOptions = [
+    { label: t('male', 'Male'), value: 'male' },
+    { label: t('female', 'Female'), value: 'female' },
+  ];
+
+  const handleSexChange = (value: string) => {
+    setSex(value as 'male' | 'female' | '');
   };
 
   return (
@@ -85,37 +84,12 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           keyboardType="email-address"
           autoCapitalize="none"
         />
-        <TouchableOpacity
-          style={styles.dropdown}
-          onPress={() => setSexPickerVisible(true)}
-        >
-          <Text style={sexPickerText(sex)}>
-            {t(pickerData[sex], pickerData[sex] === 'male' ? 'Male' : pickerData[sex] === 'female' ? 'Female' : 'Select Gender')}
-          </Text>
-        </TouchableOpacity>
-        <Modal
-          visible={sexPickerVisible}
-          transparent
-          animationType="fade"
-        >
-          <View style={styles.modalOverlay}>
-            <TouchableOpacity style={StyleSheet.absoluteFill} onPress={() => setSexPickerVisible(false)} />
-            <View style={styles.pickerContainer}>
-              <Text style={styles.pickerLabel}>{t('gender', 'Gender')}</Text>
-              <Picker
-                style={{ width: '100%' }}
-                selectedValue={sex}
-                onValueChange={(itemValue) => {
-                  setSex(itemValue);
-                  setSexPickerVisible(false);
-                }}
-              >
-                <Picker.Item label={t('male', 'Male')} value="male" />
-                <Picker.Item label={t('female', 'Female')} value="female" />
-              </Picker>
-            </View>
-          </View>
-        </Modal>
+        <CustomDropdown
+          value={sex}
+          onValueChange={handleSexChange}
+          options={genderOptions}
+          placeholder={t('selectSex', 'Select Gender')}
+        />
         <View style={styles.passwordInputContainer}>
           <TextInput
             style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
@@ -163,13 +137,6 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     </KeyboardAvoidingView >
   );
 };
-
-// Dynamic style for sex picker text
-const sexPickerText = (sex: string) => ({
-  fontSize: 16,
-  color: sex?.length ? COLORS.black : COLORS.gray,
-});
-
 
 const styles = StyleSheet.create({
   container: {
@@ -225,35 +192,6 @@ const styles = StyleSheet.create({
     color: '#f4511e',
     fontWeight: 'bold',
     fontSize: 14,
-  },
-  dropdown: {
-    height: 50,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    borderRadius: 8,
-    paddingHorizontal: 15,
-    marginBottom: 15,
-    justifyContent: 'center',
-    backgroundColor: COLORS.white,
-  },
-  modalOverlay: {
-    flex: 1,
-    backgroundColor: COLORS.overlay,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  pickerContainer: {
-    backgroundColor: COLORS.white,
-    borderRadius: 8,
-    width: '80%',
-    overflow: 'hidden',
-  },
-  pickerLabel: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginTop: 16,
-    marginBottom: -18,
-    textAlign: 'center'
   },
 });
 
