@@ -8,23 +8,26 @@
  * - Redux Logger for development debugging
  */
 
-import {configureStore, combineReducers} from '@reduxjs/toolkit';
-import {persistStore, persistReducer} from 'redux-persist';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
+import { persistStore, persistReducer } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {createLogger} from 'redux-logger';
+import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
 
 import authReducer from './slices/authSlice';
-import {rootSaga} from './sagas/rootSaga';
+import userReducer from './slices/userSlice';
+import { rootSaga } from './sagas/rootSaga';
 
 /**
  * Root Reducer
  * Combines all feature reducers into a single reducer
  * Currently includes:
  * - auth: Authentication state management
+ * - user: User data management
  */
 const rootReducer = combineReducers({
   auth: authReducer,
+  user: userReducer,
 });
 
 /**
@@ -32,12 +35,12 @@ const rootReducer = combineReducers({
  * - key: The key used to store the persisted state in AsyncStorage
  * - storage: The storage engine (AsyncStorage for React Native)
  * - whitelist: Array of reducer names to persist
- *   Currently only persisting auth state
+ *   Currently persisting auth and user state
  */
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['auth'], // only auth will be persisted
+  whitelist: ['user'], // auth and user will be persisted
 };
 
 // Create a persisted reducer that will save state to AsyncStorage
