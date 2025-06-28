@@ -70,18 +70,6 @@ axiosInstance.interceptors.response.use(
 
       return axiosInstance(config);
     }
-
-    // Show alert for error message
-    let message = '';
-
-    if (error?.response?.data?.message) {
-      message = error.response.data.message;
-    } else if (error?.message) {
-      message = error.message;
-    }
-
-    if (!isTimeoutError) // Do not show alert in case of timeout
-      Alert.alert('Error', message);
     return Promise.reject(error);
   }
 );
