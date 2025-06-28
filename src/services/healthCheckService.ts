@@ -7,7 +7,10 @@ export const performHealthCheck = (
   setMaintenanceModalVisible: (visible: boolean) => void,
   t: TFunction
 ) => {
-  axiosInstance.get(URLS.healthCheck)
+  axiosInstance.get(URLS.healthCheck, { 
+    maxRetryCount: 5, // Higher retry count for health checks
+    timeout: 15000 // Longer timeout for health checks
+  } as any)
     .then(res => {
       setMaintenanceModalVisible(false);
       console.log('Health check success:', res.data);
