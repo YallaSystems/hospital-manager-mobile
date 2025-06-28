@@ -3,34 +3,35 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
   Alert,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { loginRequest } from '../store/slices/authSlice';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { COLORS } from '../constants/colors';
+import { useSignupViewModel } from '../viewmodels/useSignupViewModel';
+import SubmitButton from '../components/SubmitButton';
 
 type OtpScreenProps = NativeStackScreenProps<AuthStackParamList, 'Otp'>;
 
-const OtpScreen = ({ route }: OtpScreenProps) => {
+const OtpScreen = ({ route, navigation }: OtpScreenProps) => {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const { email, password } = route.params || {};
 
   const [otp, setOtp] = useState('');
   const otpInput = useRef<TextInput>(null);
 
+  // Use signup viewmodel for signup flow
+  const { handleSignupSubmitAfterOTP, signupLoading } = useSignupViewModel(navigation);
+
   const handleOtpSubmit = () => {
     if (otp.length === 6) {
       if (email && password) {
-        // Login flow - dispatch login request
-        dispatch(loginRequest({ email, password }));
+        // Signup flow - use the viewmodel
+        handleSignupSubmitAfterOTP(otp);
       } else if (email) {
         // Forgot password flow - handle password reset
         // Here you would typically make an API call to verify OTP and reset password
@@ -61,9 +62,13 @@ const OtpScreen = ({ route }: OtpScreenProps) => {
           style={styles.otpInput}
           textContentType="none"
         />
-        <TouchableOpacity style={styles.button} onPress={handleOtpSubmit}>
-          <Text style={styles.buttonText}>{t('verify', 'Verify')}</Text>
-        </TouchableOpacity>
+        <SubmitButton
+          onPress={handleOtpSubmit}
+          disabled={otp.length !== 6}
+          loading={signupLoading}
+        >
+          {t('verify', 'Verify')}
+        </SubmitButton>
       </View>
     </KeyboardAvoidingView>
   );

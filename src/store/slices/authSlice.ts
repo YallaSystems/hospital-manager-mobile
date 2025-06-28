@@ -16,6 +16,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
  * @property isAuthenticated - Whether the user is currently authenticated
  * @property user - User information including email and token
  * @property loading - Whether an authentication request is in progress
+ * @property signupLoading - Whether a signup request is in progress
  * @property error - Any error message from the last authentication attempt
  */
 interface AuthState {
@@ -25,6 +26,7 @@ interface AuthState {
     token: string | null;
   } | null;
   loading: boolean;
+  signupLoading: boolean;
   error: string | null;
 }
 
@@ -35,6 +37,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   user: null,
   loading: false,
+  signupLoading: false,
   error: null,
 };
 
@@ -45,6 +48,9 @@ const initialState: AuthState = {
  * - loginRequest: Initiates the login process
  * - loginSuccess: Handles successful login
  * - loginFailure: Handles failed login attempts
+ * - signupRequest: Initiates the signup process
+ * - signupSuccess: Handles successful signup
+ * - signupFailure: Handles failed signup attempts
  * - logout: Handles user logout
  */
 const authSlice = createSlice({
@@ -81,6 +87,31 @@ const authSlice = createSlice({
       state.error = action.payload;
     },
     /**
+     * Initiates the signup process
+     * @param state - Current state
+     */
+    signupRequest: (state) => {
+      state.signupLoading = true;
+      state.error = null;
+    },
+    /**
+     * Handles successful signup
+     * @param state - Current state
+     */
+    signupSuccess: (state) => {
+      state.signupLoading = false;
+      state.error = null;
+    },
+    /**
+     * Handles failed signup attempts
+     * @param state - Current state
+     * @param action - Payload containing error message
+     */
+    signupFailure: (state, action: PayloadAction<string>) => {
+      state.signupLoading = false;
+      state.error = action.payload;
+    },
+    /**
      * Handles user logout
      * @param state - Current state
      */
@@ -92,5 +123,5 @@ const authSlice = createSlice({
   },
 });
 
-export const {loginRequest, loginSuccess, loginFailure, logout} = authSlice.actions;
+export const {loginRequest, loginSuccess, loginFailure, signupRequest, signupSuccess, signupFailure, logout} = authSlice.actions;
 export default authSlice.reducer; 

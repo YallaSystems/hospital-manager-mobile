@@ -34,6 +34,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     handleSignup,
     sex,
     setSex,
+    signupLoading,
   } = useSignupViewModel(navigation);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -130,6 +131,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
         <SubmitButton
           onPress={handleSignup}
           disabled={!isFormValid}
+          loading={signupLoading}
         >
           {t('signup', 'Signup')}
         </SubmitButton>

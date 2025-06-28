@@ -1,10 +1,12 @@
 import { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-native';
 import axiosInstance from '../axiosInstance';
 import { URLS } from '../constants/urls';
 import { useTranslation } from 'react-i18next';
 import { PATHS } from '../constants/paths';
+import { signupRequest, signupSuccess, signupFailure } from '../store/slices/authSlice';
+import { RootState } from '../store';
 
 /**
  * A view model hook for the Signup screen.
@@ -25,6 +27,9 @@ export const useSignupViewModel = (navigation: any) => {
   const [role, setRole] = useState('patient');
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  
+  // Get signup loading state from auth store
+  const { signupLoading } = useSelector((state: RootState) => state.auth);
 
   /**
    * Handles the signup process.
@@ -83,24 +88,37 @@ export const useSignupViewModel = (navigation: any) => {
       );
       return;
     }
-    // Dispatch signup action here
-    // For now, let's navigate to OTP as an example
+
+    // Dispatch signup request action
+    dispatch(signupRequest());
+
     try {
       const sendOTPResponse = await axiosInstance.post(URLS.sendOTP, { email: email.trim() });
+      
+      // Dispatch signup success action
+      dispatch(signupSuccess());
+      
       Alert.alert(
         t('success', 'Success'),
         sendOTPResponse.data.message
       );
       navigation.navigate(PATHS.AUTH.OTP, { email, password });
-    } catch (err) {
+    } catch (err: any) {
+      // Dispatch signup failure action
+      const errorMessage = err?.response?.data?.message || t('errors.failedToSendResetLink', 'Failed to send reset link. Please try again.');
+      dispatch(signupFailure(errorMessage));
+      
       Alert.alert(
         t('error', 'An error occurred'),
-        t('errors.failedToSendResetLink', 'Failed to send reset link. Please try again.')
+        errorMessage
       );
     }
-  }, [firstName, lastName, email, sex, password, confirmPassword, navigation, t]);
+  }, [firstName, lastName, email, sex, password, confirmPassword, navigation, t, dispatch]);
 
   const handleSignupSubmitAfterOTP = async (Otp: string) => {
+    // Dispatch signup request action
+    dispatch(signupRequest());
+    
     try {
       const response = await axiosInstance.post(
         URLS.register,
@@ -120,15 +138,23 @@ export const useSignupViewModel = (navigation: any) => {
           },
         }
       );
+      
+      // Dispatch signup success action
+      dispatch(signupSuccess());
+      
       Alert.alert(
         t('success', 'Success'),
         response.data.message || 'Registration successful'
       );
       navigation.replace(PATHS.Main, { screen: PATHS.MAIN.HomeStackScreen });
     } catch (err: any) {
+      // Dispatch signup failure action
+      const errorMessage = err?.response?.data?.message || t('errors.failedToRegister', 'Registration failed');
+      dispatch(signupFailure(errorMessage));
+      
       Alert.alert(
         t('error', 'An error occurred'),
-        err?.response?.data?.message || t('errors.failedToRegister', 'Registration failed')
+        errorMessage
       );
     }
   };
@@ -150,5 +176,6 @@ export const useSignupViewModel = (navigation: any) => {
     role,
     setRole,
     handleSignupSubmitAfterOTP,
+    signupLoading,
   };
 }; 
