@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-native';
 import axiosInstance from '../axiosInstance';
@@ -113,7 +113,7 @@ export const useSignupViewModel = (navigation: any) => {
     }
   }, [firstName, lastName, email, sex, password, confirmPassword, navigation, t, dispatch]);
 
-  const handleSignupSubmitAfterOTP = async (Otp: string) => {
+  const handleSignupSubmitAfterOTP = useCallback(async (Otp: string) => {
     // Dispatch signup request action
     dispatch(signupRequest());
     
@@ -156,9 +156,10 @@ export const useSignupViewModel = (navigation: any) => {
         errorMessage
       );
     }
-  };
+  }, [email, firstName, lastName, sex, role, password, dispatch, t, navigation]);
 
-  return {
+  // Memoize the returned object to prevent unnecessary re-renders
+  return useMemo(() => ({
     firstName,
     setFirstName,
     lastName,
@@ -176,5 +177,23 @@ export const useSignupViewModel = (navigation: any) => {
     setRole,
     handleSignupSubmitAfterOTP,
     signupLoading,
-  };
+  }), [
+    firstName,
+    setFirstName,
+    lastName,
+    setLastName,
+    email,
+    setEmail,
+    password,
+    setPassword,
+    confirmPassword,
+    setConfirmPassword,
+    handleSignup,
+    sex,
+    setSex,
+    role,
+    setRole,
+    handleSignupSubmitAfterOTP,
+    signupLoading,
+  ]);
 }; 

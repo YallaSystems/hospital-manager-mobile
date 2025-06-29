@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback, useMemo } from 'react';
 import {
   View,
   Text,
@@ -24,7 +24,7 @@ interface CustomDropdownProps {
   disabled?: boolean;
 }
 
-const CustomDropdown: React.FC<CustomDropdownProps> = ({
+const CustomDropdown: React.FC<CustomDropdownProps> = React.memo(({
   value,
   onValueChange,
   options,
@@ -34,12 +34,29 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
 }) => {
   const [isVisible, setIsVisible] = React.useState(false);
 
-  const selectedOption = options.find(option => option.value === value);
+  // Memoize the selected option to prevent recalculation
+  const selectedOption = useMemo(() => 
+    options.find(option => option.value === value), 
+    [options, value]
+  );
 
-  const handleSelect = (option: DropdownOption) => {
+  // Memoize the handle select function
+  const handleSelect = useCallback((option: DropdownOption) => {
     onValueChange(option.value);
     setIsVisible(false);
-  };
+  }, [onValueChange]);
+
+  // Memoize the open dropdown function
+  const handleOpenDropdown = useCallback(() => {
+    if (!disabled) {
+      setIsVisible(true);
+    }
+  }, [disabled]);
+
+  // Memoize the close dropdown function
+  const handleCloseDropdown = useCallback(() => {
+    setIsVisible(false);
+  }, []);
 
   return (
     <>
@@ -49,7 +66,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
           disabled && styles.disabled,
           style,
         ]}
-        onPress={() => !disabled && setIsVisible(true)}
+        onPress={handleOpenDropdown}
         disabled={disabled}
       >
         <Text style={[
@@ -65,18 +82,18 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         visible={isVisible}
         transparent
         animationType="fade"
-        onRequestClose={() => setIsVisible(false)}
+        onRequestClose={handleCloseDropdown}
       >
         <View style={styles.modalOverlay}>
           <TouchableOpacity
             style={styles.backdrop}
-            onPress={() => setIsVisible(false)}
+            onPress={handleCloseDropdown}
           />
           <View style={styles.modalContent}>
             <View style={styles.modalHeader}>
               <Text style={styles.modalTitle}>{placeholder}</Text>
               <TouchableOpacity
-                onPress={() => setIsVisible(false)}
+                onPress={handleCloseDropdown}
                 style={styles.closeButton}
               >
                 <Text style={styles.closeButtonText}>✕</Text>
@@ -110,7 +127,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       </Modal>
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
   dropdown: {

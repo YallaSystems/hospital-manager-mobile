@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { TouchableOpacity, Text, ActivityIndicator, StyleSheet, ViewStyle } from 'react-native';
 import { COLORS } from '../constants/colors';
 
@@ -10,9 +10,17 @@ interface SubmitButtonProps {
   style?: ViewStyle;
 }
 
-const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, disabled = false, loading = false, children, style }) => {
+const SubmitButton: React.FC<SubmitButtonProps> = React.memo(({ 
+  onPress, 
+  disabled = false, 
+  loading = false, 
+  children, 
+  style 
+}) => {
   const isEnabled = !disabled && !loading;
-  const buttonStyle: ViewStyle = {
+  
+  // Memoize the button style to prevent recalculation on every render
+  const buttonStyle: ViewStyle = useMemo(() => ({
     backgroundColor: isEnabled ? COLORS.primary : COLORS.disabled,
     height: 50,
     borderRadius: 8,
@@ -21,7 +29,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, disabled = false, 
     marginTop: 15,
     opacity: isEnabled ? 1 : 0.7,
     ...(style || {}),
-  };
+  }), [isEnabled, style]);
 
   return (
     <TouchableOpacity
@@ -41,7 +49,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({ onPress, disabled = false, 
       )}
     </TouchableOpacity>
   );
-};
+});
 
 const styles = StyleSheet.create({
   buttonText: {

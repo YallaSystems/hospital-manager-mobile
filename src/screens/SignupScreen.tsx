@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -18,7 +18,7 @@ import CustomDropdown from '../components/CustomDropdown';
 
 type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 
-const SignupScreen = ({ navigation }: SignupScreenProps) => {
+const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
   const { t } = useTranslation();
   const {
     firstName,
@@ -39,23 +39,45 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const isFormValid =
-    firstName.trim() &&
-    lastName.trim() &&
-    email.trim() &&
-    /^[^\s@+]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) &&
-    sex &&
-    password.length >= 8 &&
-    password === confirmPassword;
+  // Memoize the email validation regex
+  const emailRegex = useMemo(() => /^[^\s@+]+@[^\s@]+\.[^\s@]+$/, []);
 
-  const genderOptions = [
+  // Memoize form validation to prevent recalculation on every render
+  const isFormValid = useMemo(() => {
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const trimmedEmail = email.trim();
+    
+    return (
+      trimmedFirstName &&
+      trimmedLastName &&
+      trimmedEmail &&
+      emailRegex.test(trimmedEmail) &&
+      sex &&
+      password.length >= 8 &&
+      password === confirmPassword
+    );
+  }, [firstName, lastName, email, sex, password, confirmPassword, emailRegex]);
+
+  // Memoize gender options to prevent recreation on every render
+  const genderOptions = useMemo(() => [
     { label: t('male', 'Male'), value: 'male' },
     { label: t('female', 'Female'), value: 'female' },
-  ];
+  ], [t]);
 
-  const handleSexChange = (value: string) => {
+  // Memoize the sex change handler
+  const handleSexChange = useCallback((value: string) => {
     setSex(value as 'male' | 'female' | '');
-  };
+  }, [setSex]);
+
+  // Memoize the password visibility toggles
+  const togglePasswordVisibility = useCallback(() => {
+    setShowPassword((prev) => !prev);
+  }, []);
+
+  const toggleConfirmPasswordVisibility = useCallback(() => {
+    setShowConfirmPassword((prev) => !prev);
+  }, []);
 
   return (
     <KeyboardAvoidingView
@@ -102,7 +124,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           />
           <TouchableOpacity
             style={styles.showHideButtonInside}
-            onPress={() => setShowPassword((prev) => !prev)}
+            onPress={togglePasswordVisibility}
           >
             <Text style={styles.showHideButtonText}>
               {showPassword ? t('hide') : t('show')}
@@ -120,7 +142,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
           />
           <TouchableOpacity
             style={styles.showHideButtonInside}
-            onPress={() => setShowConfirmPassword((prev) => !prev)}
+            onPress={toggleConfirmPasswordVisibility}
           >
             <Text style={styles.showHideButtonText}>
               {showConfirmPassword ? t('hide') : t('show')}
@@ -138,7 +160,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
       </View >
     </KeyboardAvoidingView >
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
