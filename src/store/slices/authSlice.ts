@@ -4,7 +4,6 @@
  * This slice manages the authentication state of the application.
  * It handles:
  * - User authentication status
- * - User information
  * - Loading states
  * - Error states
  */
@@ -14,17 +13,12 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 /**
  * Authentication State Interface
  * @property isAuthenticated - Whether the user is currently authenticated
- * @property user - User information including email and token
  * @property loading - Whether an authentication request is in progress
  * @property signupLoading - Whether a signup request is in progress
  * @property error - Any error message from the last authentication attempt
  */
 interface AuthState {
   isAuthenticated: boolean;
-  user: {
-    email: string;
-    token: string | null;
-  } | null;
   loading: boolean;
   signupLoading: boolean;
   error: string | null;
@@ -35,7 +29,6 @@ interface AuthState {
  */
 const initialState: AuthState = {
   isAuthenticated: false,
-  user: null,
   loading: false,
   signupLoading: false,
   error: null,
@@ -69,11 +62,9 @@ const authSlice = createSlice({
     /**
      * Handles successful login
      * @param state - Current state
-     * @param action - Payload containing user email and token
      */
-    loginSuccess: (state, action: PayloadAction<{email: string; token: string}>) => {
+    loginSuccess: (state) => {
       state.isAuthenticated = true;
-      state.user = action.payload;
       state.loading = false;
       state.error = null;
     },
@@ -99,6 +90,7 @@ const authSlice = createSlice({
      * @param state - Current state
      */
     signupSuccess: (state) => {
+      state.isAuthenticated = true;
       state.signupLoading = false;
       state.error = null;
     },
@@ -117,7 +109,6 @@ const authSlice = createSlice({
      */
     logout: state => {
       state.isAuthenticated = false;
-      state.user = null;
       state.error = null;
     },
   },
