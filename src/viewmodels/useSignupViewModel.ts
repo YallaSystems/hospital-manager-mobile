@@ -5,7 +5,7 @@ import axiosInstance from '../axiosInstance';
 import { URLS } from '../constants/urls';
 import { useTranslation } from 'react-i18next';
 import { PATHS } from '../constants/paths';
-import { signupRequest, signupSuccess, signupFailure } from '../store/slices/authSlice';
+import { signupRequest, signupSuccess, signupFailure, otpSuccess } from '../store/slices/authSlice';
 import { setUserFromSignup } from '../store/slices/userSlice';
 import { RootState } from '../store';
 
@@ -28,7 +28,7 @@ export const useSignupViewModel = (navigation: any) => {
   const [role, setRole] = useState('patient');
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  
+
   // Get signup loading state from auth store
   const { signupLoading } = useSelector((state: RootState) => state.auth);
 
@@ -95,7 +95,7 @@ export const useSignupViewModel = (navigation: any) => {
 
     try {
       const sendOTPResponse = await axiosInstance.post(URLS.sendOTP, { email: email.trim() });
-      
+      dispatch(otpSuccess());
       Alert.alert(
         t('success', 'Success'),
         sendOTPResponse.data.message
@@ -105,7 +105,7 @@ export const useSignupViewModel = (navigation: any) => {
       // Dispatch signup failure action
       const errorMessage = err?.response?.data?.message || t('errors.failedToSendResetLink', 'Failed to send reset link. Please try again.');
       dispatch(signupFailure(errorMessage));
-      
+
       Alert.alert(
         t('error', 'An error occurred'),
         errorMessage
@@ -116,7 +116,7 @@ export const useSignupViewModel = (navigation: any) => {
   const handleSignupSubmitAfterOTP = useCallback(async (Otp: string) => {
     // Dispatch signup request action
     dispatch(signupRequest());
-    
+
     try {
       const response = await axiosInstance.post(
         URLS.register,
@@ -136,10 +136,10 @@ export const useSignupViewModel = (navigation: any) => {
           },
         }
       );
-      
+
       // Dispatch signup success action
       dispatch(signupSuccess());
-      
+
       Alert.alert(
         t('success', 'Success'),
         response.data.message || 'Registration successful'
@@ -150,7 +150,7 @@ export const useSignupViewModel = (navigation: any) => {
       // Dispatch signup failure action
       const errorMessage = err?.response?.data?.message || t('errors.failedToRegister', 'Registration failed');
       dispatch(signupFailure(errorMessage));
-      
+
       Alert.alert(
         t('error', 'An error occurred'),
         errorMessage

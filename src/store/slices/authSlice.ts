@@ -45,6 +45,7 @@ const initialState: AuthState = {
  * - signupSuccess: Handles successful signup
  * - signupFailure: Handles failed signup attempts
  * - logout: Handles user logout
+ * - otpSuccess: Handles OTP success (OTP sent or verified)
  */
 const authSlice = createSlice({
   name: 'auth',
@@ -111,8 +112,15 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
     },
+    /**
+     * Handles OTP success (OTP sent or verified)
+     * @param state - Current state
+     */
+    otpSuccess: (state) => {
+      state.signupLoading = false;
+    },
   },
 });
 
-export const {loginRequest, loginSuccess, loginFailure, signupRequest, signupSuccess, signupFailure, logout} = authSlice.actions;
+export const {loginRequest, loginSuccess, loginFailure, signupRequest, signupSuccess, signupFailure, logout, otpSuccess} = authSlice.actions;
 export default authSlice.reducer; 
