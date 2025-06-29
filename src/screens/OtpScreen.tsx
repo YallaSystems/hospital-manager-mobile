@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -23,6 +23,12 @@ const OtpScreen = ({ route, navigation }: OtpScreenProps) => {
 
   const [otp, setOtp] = useState('');
   const otpInput = useRef<TextInput>(null);
+
+
+  useEffect(() => {
+    if (otp.length === 6)
+      handleOtpSubmit()
+  }, [otp])
 
   // Use signup viewmodel for signup flow
   const { handleSignupSubmitAfterOTP, signupLoading } = useSignupViewModel(navigation);
