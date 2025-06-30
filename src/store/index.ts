@@ -9,7 +9,7 @@
  */
 
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { persistStore, persistReducer } from 'redux-persist';
+import { persistStore, persistReducer, Persistor } from 'redux-persist';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createLogger } from 'redux-logger';
 import createSagaMiddleware from 'redux-saga';
@@ -92,7 +92,11 @@ export const store = configureStore({
 });
 
 // persistor is used by Redux Persist to control and manage the persistence layer. It is passed to the PersistGate component in the app's entry point to delay rendering of the app UI until the persisted state has been retrieved and rehydrated into the Redux store.
-export const persistor = persistStore(store);
+export let persistor: Persistor | undefined = undefined;
+
+if (process.env.NODE_ENV !== 'test') {
+  persistor = persistStore(store);
+}
 
 // Run the root saga
 sagaMiddleware.run(rootSaga);
