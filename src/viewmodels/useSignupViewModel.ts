@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert } from 'react-native';
 import axiosInstance from '../axiosInstance';
@@ -7,7 +7,9 @@ import { useTranslation } from 'react-i18next';
 import { PATHS } from '../constants/paths';
 import { signupRequest, signupSuccess, signupFailure, otpSuccess } from '../store/slices/authSlice';
 import { setUserFromSignup } from '../store/slices/userSlice';
+import { setAuthForm, clearAuthForm } from '../store/slices/authSlice';
 import { RootState } from '../store';
+import React from 'react';
 
 /**
  * A view model hook for the Signup screen.
@@ -18,19 +20,23 @@ import { RootState } from '../store';
  * @returns An object containing the state variables, their setters, and the signup handler function.
  */
 export const useSignupViewModel = (navigation: any) => {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState(``);
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  type Sex = 'male' | 'female' | '';
-  const [sex, setSex] = useState<Sex>('');
-  const [role, setRole] = useState('patient');
   const dispatch = useDispatch();
+  const authForm = useSelector((state: RootState) => state.auth.authForm);
+  const { firstName, lastName, email, password, confirmPassword, sex, role } = authForm;
+
   const { t } = useTranslation();
 
   // Get signup loading state from auth store
   const { signupLoading } = useSelector((state: RootState) => state.auth);
+
+  // Setters for signup form fields (dispatch to Redux)
+  const setFirstName = React.useCallback((value: string) => dispatch(setAuthForm({ firstName: value })), [dispatch]);
+  const setLastName = React.useCallback((value: string) => dispatch(setAuthForm({ lastName: value })), [dispatch]);
+  const setEmail = React.useCallback((value: string) => dispatch(setAuthForm({ email: value })), [dispatch]);
+  const setPassword = React.useCallback((value: string) => dispatch(setAuthForm({ password: value })), [dispatch]);
+  const setSex = React.useCallback((value: string) => dispatch(setAuthForm({ sex: value })), [dispatch]);
+  const setRole = React.useCallback((value: string) => dispatch(setAuthForm({ role: value })), [dispatch]);
+  const setConfirmPassword = React.useCallback((value: string) => dispatch(setAuthForm({ confirmPassword: value })), [dispatch]);
 
   /**
    * Handles the signup process.
@@ -118,21 +124,23 @@ export const useSignupViewModel = (navigation: any) => {
     dispatch(signupRequest());
 
     try {
+      const data = {
+        email: email?.trim(),
+        firstName: firstName?.trim(),
+        lastName: lastName?.trim(),
+        sex,
+        role,
+        password,
+      };
+
       const response = await axiosInstance.post(
         URLS.register,
-        {
-          email: email.trim(),
-          firstName: firstName.trim(),
-          lastName: lastName.trim(),
-          sex,
-          role,
-          password,
-        },
+        data,
         {
           headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Authorization: `X-OTP ${email}:${Otp}`,
+            Authorization: `X-OTP ${data.email}:${Otp}`,
           },
         }
       );
@@ -140,6 +148,7 @@ export const useSignupViewModel = (navigation: any) => {
       // Dispatch signup success action
       dispatch(setUserFromSignup(response.data));
       dispatch(signupSuccess());
+      dispatch(clearAuthForm());
       Alert.alert(
         t('success', 'Success'),
         response.data.message || 'Registration successful'
@@ -156,6 +165,23 @@ export const useSignupViewModel = (navigation: any) => {
       );
     }
   }, [email, firstName, lastName, sex, role, password, dispatch, t, navigation]);
+
+  // Business logic for form validation
+  const emailRegex = React.useMemo(() => /^[^\s@+]+@[^\s@]+\.[^\s@]+$/, []);
+  const isFormValid = React.useMemo(() => {
+    const trimmedFirstName = firstName.trim();
+    const trimmedLastName = lastName.trim();
+    const trimmedEmail = email.trim();
+    return (
+      trimmedFirstName &&
+      trimmedLastName &&
+      trimmedEmail &&
+      emailRegex.test(trimmedEmail) &&
+      sex &&
+      password.length >= 8 &&
+      password === confirmPassword
+    );
+  }, [firstName, lastName, email, sex, password, confirmPassword, emailRegex]);
 
   // Memoize the returned object to prevent unnecessary re-renders
   return useMemo(() => ({
@@ -176,6 +202,7 @@ export const useSignupViewModel = (navigation: any) => {
     setRole,
     handleSignupSubmitAfterOTP,
     signupLoading,
+    isFormValid,
   }), [
     firstName,
     setFirstName,
@@ -192,7 +219,9 @@ export const useSignupViewModel = (navigation: any) => {
     setSex,
     role,
     setRole,
+    dispatch,
     handleSignupSubmitAfterOTP,
     signupLoading,
+    isFormValid,
   ]);
 }; 
