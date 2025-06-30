@@ -15,7 +15,7 @@ cd hospital-manager
 
 ### 2. Install Dependencies
 
-Install the project dependencies using Yarn.
+Install the project dependencies using npm.
 
 ```bash
 npm install
@@ -43,8 +43,7 @@ First, you will need to start **Metro**, the JavaScript bundler that ships with 
 # using npm
 npm start
 
-# OR using Yarn
-yarn start
+please use NPM, do not use Yarn
 ```
 
 ### 2. Start your Application
@@ -74,7 +73,7 @@ This project uses **Jest** for unit and component testing.
 To run the tests, execute the following command from the project root:
 
 ```bash
-yarn test
+npm run test
 ```
 
 This will run Jest in watch mode, automatically re-running tests when files are changed.
@@ -121,33 +120,12 @@ cd ios && fastlane release
 
 cd android && fastlane release
 
-📁 Folder Structure
-
-project-root/
-├── test/
-│ └── specs/
-│ └── home.e2e.js
-├── wdio.conf.js
-✍️ Sample Test (test/specs/home.e2e.js)
-
-describe('Home Screen', () => {
-it('should show welcome text', async () => {
-const welcomeText = await $('~welcomeText'); // Match testID in React Native
-await expect(welcomeText).toBeDisplayed();
-});
-});
-Make sure your app code includes:
-
-<Text testID="welcomeText">Welcome to Hospital Manager</Text>
-
-npx wdio run wdio.conf.js
-
 ✅ Unit Testing (Jest)
 This project uses Jest for unit testing.
 
 🔹 Run Tests
 
-yarn test
+npm run test
 ✅ Sample Output
 
 PASS src/screens/HomeScreen.test.js
