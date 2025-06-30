@@ -120,7 +120,8 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
-            textContentType="none"
+            textContentType="password"
+            autoComplete="password"
           />
           <TouchableOpacity
             style={styles.showHideButtonInside}
@@ -138,7 +139,8 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
             value={confirmPassword}
             onChangeText={setConfirmPassword}
             secureTextEntry={!showConfirmPassword}
-            textContentType="none"
+            textContentType="newPassword"
+            autoComplete="password-new"
           />
           <TouchableOpacity
             style={styles.showHideButtonInside}
