@@ -138,13 +138,12 @@ export const useSignupViewModel = (navigation: any) => {
       );
 
       // Dispatch signup success action
+      dispatch(setUserFromSignup(response.data));
       dispatch(signupSuccess());
-
       Alert.alert(
         t('success', 'Success'),
         response.data.message || 'Registration successful'
       );
-      dispatch(setUserFromSignup(response.data));
       navigation.replace(PATHS.Main, { screen: PATHS.MAIN.HomeStackScreen });
     } catch (err: any) {
       // Dispatch signup failure action
