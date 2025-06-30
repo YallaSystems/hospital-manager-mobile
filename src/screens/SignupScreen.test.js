@@ -101,6 +101,7 @@ describe('SignupScreen', () => {
       setSex: mockSetSex,
       handleSignup: mockHandleSignup,
       signupLoading: false,
+      isFormValid: true,
     });
 
     const { getByText } = render(<SignupScreen navigation={jest.fn()} />);
