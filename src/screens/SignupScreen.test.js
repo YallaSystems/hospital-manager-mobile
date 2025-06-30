@@ -19,6 +19,7 @@ describe('SignupScreen', () => {
   const mockSetEmail = jest.fn();
   const mockSetPassword = jest.fn();
   const mockSetConfirmPassword = jest.fn();
+  const mockSetSex = jest.fn();
   const mockHandleSignup = jest.fn();
 
   // This function runs before each test in the suite.
@@ -37,7 +38,10 @@ describe('SignupScreen', () => {
       setPassword: mockSetPassword,
       confirmPassword: '',
       setConfirmPassword: mockSetConfirmPassword,
+      sex: '',
+      setSex: mockSetSex,
       handleSignup: mockHandleSignup,
+      signupLoading: false,
     });
   });
 
@@ -81,6 +85,24 @@ describe('SignupScreen', () => {
 
   // Test case to ensure that pressing the signup button calls the handleSignup function.
   it('calls handleSignup on signup button press', () => {
+    // Mock with valid form data so the button is enabled
+    useSignupViewModel.mockReturnValue({
+      firstName: 'John',
+      setFirstName: mockSetFirstName,
+      lastName: 'Doe',
+      setLastName: mockSetLastName,
+      email: 'john@example.com',
+      setEmail: mockSetEmail,
+      password: 'password123',
+      setPassword: mockSetPassword,
+      confirmPassword: 'password123',
+      setConfirmPassword: mockSetConfirmPassword,
+      sex: 'male',
+      setSex: mockSetSex,
+      handleSignup: mockHandleSignup,
+      signupLoading: false,
+    });
+
     const { getByText } = render(<SignupScreen navigation={jest.fn()} />);
     
     // Simulates a press on the signup button.

@@ -1,107 +1,78 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import OtpScreen from './OtpScreen';
-import { Provider } from 'react-redux';
-import configureStore from 'redux-mock-store';
 import { Alert } from 'react-native';
+import { toBeDisabled } from '@testing-library/jest-native';
+expect.extend({ toBeDisabled });
 
-// Mock dependencies
-jest.mock('react-native/Libraries/Alert/Alert');
-
+// Mock i18n
 jest.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (key, params) => (params ? `${key} ${params.email}` : key),
+  useTranslation: () => ({ t: (key, def, opts) => opts && opts.email ? `Enter the OTP sent to ${opts.email}` : key }),
+}));
+
+// Mock useSignupViewModel
+const mockHandleSignupSubmitAfterOTP = jest.fn();
+jest.mock('../viewmodels/useSignupViewModel', () => ({
+  useSignupViewModel: () => ({
+    handleSignupSubmitAfterOTP: mockHandleSignupSubmitAfterOTP,
+    signupLoading: false,
   }),
 }));
 
-// Creates a mock Redux store for testing purposes.
-const mockStore = configureStore([]);
+// Mock Alert
+jest.spyOn(Alert, 'alert');
 
-// Test suite for the OtpScreen component.
+const navigation = { navigate: jest.fn(), goBack: jest.fn() };
+const routeWithPassword = { params: { email: 'test@example.com', password: 'pass123' } };
+const routeWithoutPassword = { params: { email: 'test@example.com' } };
+
 describe('OtpScreen', () => {
-  let store;
-  const mockRoute = {
-    params: {
-      email: 'test@example.com',
-      password: 'password123',
-    },
-  };
-
-  // This function runs before each test in the suite.
   beforeEach(() => {
-    // Initializes a new mock store before each test.
-    store = mockStore({});
-    // Mocks the dispatch function of the store.
-    store.dispatch = jest.fn();
-  });
-
-  // This function runs after each test in the suite to clear mock history.
-  afterEach(() => {
     jest.clearAllMocks();
   });
 
-  // Test case to ensure the OTP screen renders correctly with all expected elements.
   it('renders correctly', () => {
-    const { getByPlaceholderText, getByText } = render(
-      <Provider store={store}>
-        <OtpScreen route={mockRoute} />
-      </Provider>
+    const { getByText, getByPlaceholderText } = render(
+      <OtpScreen navigation={navigation} route={routeWithPassword} />
     );
-    
-    // Asserts that all the necessary text and input fields are displayed.
     expect(getByText('otpVerification')).toBeTruthy();
-    expect(getByText('enterOtp test@example.com')).toBeTruthy();
+    expect(getByText('Enter the OTP sent to test@example.com')).toBeTruthy();
     expect(getByPlaceholderText('- - - - - -')).toBeTruthy();
     expect(getByText('verify')).toBeTruthy();
   });
 
-  // Test case to verify that the OTP input field handles text changes correctly.
-  it('handles OTP input', () => {
-    const { getByPlaceholderText } = render(
-      <Provider store={store}>
-        <OtpScreen route={mockRoute} />
-      </Provider>
+  it('enables button only when 6 digits are entered', () => {
+    const { getByPlaceholderText, getByText } = render(
+      <OtpScreen navigation={navigation} route={routeWithPassword} />
     );
-
-    const otpInput = getByPlaceholderText('- - - - - -');
-    // Simulates typing an OTP into the input field.
-    fireEvent.changeText(otpInput, '123456');
-    // Asserts that the value of the input field is updated.
-    expect(otpInput.props.value).toBe('123456');
+    const input = getByPlaceholderText('- - - - - -');
+    const button = getByText('verify');
+    expect(button).toBeDisabled();
+    fireEvent.changeText(input, '12345');
+    expect(button).toBeDisabled();
+    fireEvent.changeText(input, '123456');
+    expect(button).not.toBeDisabled();
   });
 
-  // Test case to ensure that a loginRequest action is dispatched with a valid OTP.
-  it('dispatches loginRequest on valid OTP submission', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <Provider store={store}>
-        <OtpScreen route={mockRoute} />
-      </Provider>
+  it('calls handleSignupSubmitAfterOTP when 6 digits are entered (signup flow)', async () => {
+    const { getByPlaceholderText } = render(
+      <OtpScreen navigation={navigation} route={routeWithPassword} />
     );
-
-    // Simulates typing a valid OTP and pressing the verify button.
-    fireEvent.changeText(getByPlaceholderText('- - - - - -'), '123456');
-    fireEvent.press(getByText('verify'));
-
-    // Asserts that the loginRequest action was dispatched with the correct credentials.
-    expect(store.dispatch).toHaveBeenCalledWith({
-      type: 'auth/loginRequest',
-      payload: { email: 'test@example.com', password: 'password123' },
+    const input = getByPlaceholderText('- - - - - -');
+    fireEvent.changeText(input, '654321');
+    await waitFor(() => {
+      expect(mockHandleSignupSubmitAfterOTP).toHaveBeenCalledWith('654321');
     });
   });
 
-  // Test case to verify that an alert is shown for an invalid OTP.
-  it('shows an alert on invalid OTP submission', () => {
-    const { getByText, getByPlaceholderText } = render(
-      <Provider store={store}>
-        <OtpScreen route={mockRoute} />
-      </Provider>
+  it('shows alert when 6 digits are entered (forgot password flow)', async () => {
+    const { getByPlaceholderText } = render(
+      <OtpScreen navigation={navigation} route={routeWithoutPassword} />
     );
-
-    // Simulates typing an invalid OTP and pressing the verify button.
-    fireEvent.changeText(getByPlaceholderText('- - - - - -'), '123');
-    fireEvent.press(getByText('verify'));
-
-    // Asserts that an alert with an error message is shown.
-    expect(Alert.alert).toHaveBeenCalledWith('error', 'invalidOtp');
+    const input = getByPlaceholderText('- - - - - -');
+    fireEvent.changeText(input, '111111');
+    await waitFor(() => {
+      expect(Alert.alert).toHaveBeenCalledWith('Success', 'Password reset OTP verified successfully!');
+    });
   });
 }); 
