@@ -35,29 +35,10 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
     sex,
     setSex,
     signupLoading,
+    isFormValid,
   } = useSignupViewModel(navigation);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-
-  // Memoize the email validation regex
-  const emailRegex = useMemo(() => /^[^\s@+]+@[^\s@]+\.[^\s@]+$/, []);
-
-  // Memoize form validation to prevent recalculation on every render
-  const isFormValid = useMemo(() => {
-    const trimmedFirstName = firstName.trim();
-    const trimmedLastName = lastName.trim();
-    const trimmedEmail = email.trim();
-    
-    return (
-      trimmedFirstName &&
-      trimmedLastName &&
-      trimmedEmail &&
-      emailRegex.test(trimmedEmail) &&
-      sex &&
-      password.length >= 8 &&
-      password === confirmPassword
-    );
-  }, [firstName, lastName, email, sex, password, confirmPassword, emailRegex]);
 
   // Memoize gender options to prevent recreation on every render
   const genderOptions = useMemo(() => [
