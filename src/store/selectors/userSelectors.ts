@@ -71,7 +71,7 @@ export const selectUserRole = (state: RootState): string | null =>
  * @param state - The complete Redux state
  * @returns The expiration timestamp or null if not available
  */
-export const selectTokenExpiration = (state: RootState): Date | null => 
+export const selectTokenExpiration = (state: RootState): string | null => 
   state.user.user?.expireTimeStamp || null;
 
 /**
@@ -82,7 +82,7 @@ export const selectTokenExpiration = (state: RootState): Date | null =>
 export const selectIsTokenExpired = (state: RootState): boolean => {
   const expiration = selectTokenExpiration(state);
   if (!expiration) return true;
-  return new Date() > expiration;
+  return new Date() > new Date(expiration);
 };
 
 /**

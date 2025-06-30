@@ -33,7 +33,7 @@ export interface User {
   accessToken: string;
   refreshToken: string;
   expiresIn: number;
-  expireTimeStamp: Date;
+  expireTimeStamp: string;
 }
 
 /**
@@ -135,7 +135,7 @@ const userSlice = createSlice({
       accessToken: string;
       refreshToken: string;
       expiresIn: number;
-      expireTimeStamp: Date;
+      expireTimeStamp: string;
     }>) => {
       if (state.user) {
         state.user = {
@@ -164,7 +164,7 @@ const userSlice = createSlice({
       expiresIn: number;
     }>) => {
       const { user, accessToken, refreshToken, expiresIn } = action.payload;
-      const expireTimeStamp = new Date(Date.now() + expiresIn * 60 * 1000); // Convert minutes to milliseconds
+      const expireTimeStamp = new Date(Date.now() + expiresIn * 60 * 1000).toISOString(); // Convert minutes to milliseconds and then to ISO string
       
       state.user = {
         id: user.id,
