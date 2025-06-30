@@ -28,18 +28,6 @@ const ForgotPasswordScreen = ({ navigation }: ForgotPasswordScreenProps) => {
   const isFormValid = email.trim() && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleSendResetLink = async () => {
-    if (!email.trim()) {
-      setError(t('errors.enterYourEmail', 'Enter your email'));
-      return;
-    }
-
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email.trim())) {
-      setError(t('errors.enterValidEmail', 'Enter a valid email'));
-      return;
-    }
-
     setLoading(true);
     setError('');
 
