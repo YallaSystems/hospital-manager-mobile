@@ -1,6 +1,6 @@
 import axios, { InternalAxiosRequestConfig, AxiosHeaders } from 'axios';
-import { Alert } from 'react-native';
 import { store } from './store';
+import { URLS } from './constants/urls';
 
 // Create an axios instance
 const axiosInstance = axios.create({
@@ -13,7 +13,7 @@ axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const state = store.getState();
     const token = state.user?.user?.accessToken;
-    if (token && config.headers && typeof (config.headers as AxiosHeaders).set === 'function') {
+    if (token && config.headers && config.url !== URLS.register && config.url !== URLS.forgotPassword && typeof (config.headers as AxiosHeaders).set === 'function') {
       (config.headers as AxiosHeaders).set('Authorization', `Bearer ${token}`);
     }
     return config;
@@ -47,7 +47,7 @@ axiosInstance.interceptors.response.use(
     // console.log('Request error:', {
     //   url: config?.url,
     //   method: config?.method,
-    //   message: error.message,
+    //   message: error?.response?.data?.message,
     //   code: error.code,
     //   status: status,
     //   isTimeoutError,
