@@ -18,6 +18,7 @@ import { Modal, View, Text, StyleSheet, Button } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { performHealthCheck } from './src/services/healthCheckService';
 import MaintenanceModal from './src/components/MaintenanceModal';
+import AuthInitializer from './src/components/AuthInitializer';
 
 function App(): React.JSX.Element {
   const [isMaintenanceModalVisible, setMaintenanceModalVisible] = useState(false);
@@ -30,10 +31,12 @@ function App(): React.JSX.Element {
   return (
     <Provider store={store}>
       {/* PersistGate is used to persist the state to AsyncStorage */}
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={null} persistor={persistor!}>
         {/* SafeAreaProvider is used to handle the safe area insets */}
         <SafeAreaProvider>
-          <AppNavigator />
+          <AuthInitializer>
+            <AppNavigator />
+          </AuthInitializer>
           <MaintenanceModal
             visible={isMaintenanceModalVisible}
             onRetry={() => performHealthCheck(setMaintenanceModalVisible, t)}
