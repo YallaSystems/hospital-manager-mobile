@@ -35,12 +35,12 @@ const rootReducer = combineReducers({
  * - key: The key used to store the persisted state in AsyncStorage
  * - storage: The storage engine (AsyncStorage for React Native)
  * - whitelist: Array of reducer names to persist
- *   Currently persisting auth and user state
+ *   Currently persisting user state
  */
 const persistConfig = {
   key: 'root',
   storage: AsyncStorage,
-  whitelist: ['user'], // auth and user will be persisted
+  whitelist: ['user'], // Only user will be persisted
 };
 
 // Create a persisted reducer that will save state to AsyncStorage
