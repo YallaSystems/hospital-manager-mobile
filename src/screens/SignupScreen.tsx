@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useMemo, useCallback, useRef } from 'react';
 import {
   View,
   Text,
@@ -15,7 +15,7 @@ import type { AuthStackParamList } from '../navigation/AppNavigator';
 import { useSignupViewModel } from '../viewmodels/useSignupViewModel';
 import { COLORS } from '../constants/colors';
 import SubmitButton from '../components/SubmitButton';
-import CustomDropdown from '../components/CustomDropdown';
+import CustomDropdown, { CustomDropdownRef } from '../components/CustomDropdown';
 
 type SignupScreenProps = NativeStackScreenProps<AuthStackParamList, 'Signup'>;
 
@@ -50,6 +50,10 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
   // Memoize the sex change handler
   const handleSexChange = useCallback((value: string) => {
     setSex(value as 'male' | 'female' | '');
+    // Focus password field after gender is selected
+    setTimeout(() => {
+      passwordRef.current?.focus();
+    }, 100);
   }, [setSex]);
 
   // Memoize the password visibility toggles
@@ -61,6 +65,15 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
     setShowConfirmPassword((prev) => !prev);
   }, []);
 
+  // Input refs
+  const lastNameRef = useRef<TextInput>(null);
+  const emailRef = useRef<TextInput>(null);
+  const passwordRef = useRef<TextInput>(null);
+  const confirmPasswordRef = useRef<TextInput>(null);
+  const genderDropdownRef = useRef<CustomDropdownRef>(null);
+  const scrollViewRef = useRef<ScrollView>(null);
+  const confirmPasswordLayout = useRef<{ y: number } | null>(null);
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -69,6 +82,7 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
     >
       <View style={{ flex: 1, position: 'relative', backgroundColor: COLORS.white }}>
         <ScrollView
+          ref={scrollViewRef}
           contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 30, paddingBottom: 120 }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
@@ -81,23 +95,35 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
             value={firstName}
             onChangeText={setFirstName}
             autoCapitalize="words"
+            returnKeyType="next"
+            onSubmitEditing={() => lastNameRef.current?.focus()}
+            blurOnSubmit={false}
           />
           <TextInput
+            ref={lastNameRef}
             style={styles.input}
             placeholder={t('lastName', 'Last Name')}
             value={lastName}
             onChangeText={setLastName}
             autoCapitalize="words"
+            returnKeyType="next"
+            onSubmitEditing={() => emailRef.current?.focus()}
+            blurOnSubmit={false}
           />
           <TextInput
+            ref={emailRef}
             style={styles.input}
             placeholder={t('email', 'Email')}
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
             autoCapitalize="none"
+            returnKeyType="next"
+            onSubmitEditing={() => genderDropdownRef.current?.openDropdown()}
+            blurOnSubmit={false}
           />
           <CustomDropdown
+            ref={genderDropdownRef}
             value={sex}
             onValueChange={handleSexChange}
             options={genderOptions}
@@ -105,6 +131,7 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
           />
           <View style={styles.passwordInputContainer}>
             <TextInput
+              ref={passwordRef}
               style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
               placeholder={t('password')}
               value={password}
@@ -112,6 +139,16 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
               secureTextEntry={!showPassword}
               textContentType="password"
               autoComplete="password"
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                confirmPasswordRef.current?.focus();
+                setTimeout(() => {
+                  if (confirmPasswordLayout.current) {
+                    scrollViewRef.current?.scrollTo({ y: confirmPasswordLayout.current.y + 60, animated: true });
+                  }
+                }, 100);
+              }}
+              blurOnSubmit={false}
             />
             <TouchableOpacity
               style={styles.showHideButtonInside}
@@ -124,6 +161,7 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
           </View>
           <View style={styles.passwordInputContainer}>
             <TextInput
+              ref={confirmPasswordRef}
               style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
               placeholder={t('confirmPassword')}
               value={confirmPassword}
@@ -131,6 +169,14 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
               secureTextEntry={!showConfirmPassword}
               textContentType="newPassword"
               autoComplete="password-new"
+              returnKeyType={"done"}
+              onSubmitEditing={isFormValid ? handleSignup : undefined}
+              blurOnSubmit={true}
+              onLayout={e => {
+                confirmPasswordLayout.current = { y: e.nativeEvent.layout.y };
+              }}
+              editable={true}
+              enablesReturnKeyAutomatically={true}
             />
             <TouchableOpacity
               style={styles.showHideButtonInside}

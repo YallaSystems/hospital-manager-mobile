@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useCallback, useMemo, useImperativeHandle } from 'react';
 import {
   View,
   Text,
@@ -24,14 +24,18 @@ interface CustomDropdownProps {
   disabled?: boolean;
 }
 
-const CustomDropdown: React.FC<CustomDropdownProps> = React.memo(({
+export interface CustomDropdownRef {
+  openDropdown: () => void;
+}
+
+const CustomDropdown = React.memo(React.forwardRef<CustomDropdownRef, CustomDropdownProps>(({
   value,
   onValueChange,
   options,
   placeholder = 'Select an option',
   style,
   disabled = false,
-}) => {
+}, ref) => {
   const [isVisible, setIsVisible] = React.useState(false);
 
   // Memoize the selected option to prevent recalculation
@@ -57,6 +61,12 @@ const CustomDropdown: React.FC<CustomDropdownProps> = React.memo(({
   const handleCloseDropdown = useCallback(() => {
     setIsVisible(false);
   }, []);
+
+  // useImperativeHandle is used here to expose the openDropdown method to parent components via ref,
+  // allowing the parent to programmatically open the dropdown (e.g., after submitting the previous input).
+  useImperativeHandle(ref, () => ({
+    openDropdown: handleOpenDropdown,
+  }));
 
   return (
     <>
@@ -127,7 +137,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = React.memo(({
       </Modal>
     </>
   );
-});
+}));
 
 const styles = StyleSheet.create({
   dropdown: {
