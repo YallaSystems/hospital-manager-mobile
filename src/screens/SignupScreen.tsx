@@ -7,6 +7,7 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
 } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
@@ -62,86 +63,107 @@ const SignupScreen = React.memo(({ navigation }: SignupScreenProps) => {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={styles.container}>
-      <View style={styles.formContainer}>
-        <Text style={styles.title}>{t('createAccount', 'Create Account')}</Text>
-        <TextInput
-          style={styles.input}
-          placeholder={t('firstName', 'First Name')}
-          value={firstName}
-          onChangeText={setFirstName}
-          autoCapitalize="words"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={t('lastName', 'Last Name')}
-          value={lastName}
-          onChangeText={setLastName}
-          autoCapitalize="words"
-        />
-        <TextInput
-          style={styles.input}
-          placeholder={t('email', 'Email')}
-          value={email}
-          onChangeText={setEmail}
-          keyboardType="email-address"
-          autoCapitalize="none"
-        />
-        <CustomDropdown
-          value={sex}
-          onValueChange={handleSexChange}
-          options={genderOptions}
-          placeholder={t('selectSex', 'Select Gender')}
-        />
-        <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
-            placeholder={t('password')}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={!showPassword}
-            textContentType="password"
-            autoComplete="password"
-          />
-          <TouchableOpacity
-            style={styles.showHideButtonInside}
-            onPress={togglePasswordVisibility}
-          >
-            <Text style={styles.showHideButtonText}>
-              {showPassword ? t('hide') : t('show')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.passwordInputContainer}>
-          <TextInput
-            style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
-            placeholder={t('confirmPassword')}
-            value={confirmPassword}
-            onChangeText={setConfirmPassword}
-            secureTextEntry={!showConfirmPassword}
-            textContentType="newPassword"
-            autoComplete="password-new"
-          />
-          <TouchableOpacity
-            style={styles.showHideButtonInside}
-            onPress={toggleConfirmPasswordVisibility}
-          >
-            <Text style={styles.showHideButtonText}>
-              {showConfirmPassword ? t('hide') : t('show')}
-            </Text>
-          </TouchableOpacity>
-        </View>
-        {/* Submit Button */}
-        <SubmitButton
-          onPress={handleSignup}
-          disabled={!isFormValid}
-          loading={signupLoading}
+      style={{ flex: 1 }}
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 88 : 0}
+    >
+      <View style={{ flex: 1, position: 'relative', backgroundColor: COLORS.white }}>
+        <ScrollView
+          contentContainerStyle={{ paddingHorizontal: 20, paddingTop: 30, paddingBottom: 120 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          style={{ flexGrow: 1 }}
         >
-          {t('signup', 'Signup')}
-        </SubmitButton>
-      </View >
-    </KeyboardAvoidingView >
+          <Text style={styles.title}>{t('createAccount', 'Create Account')}</Text>
+          <TextInput
+            style={styles.input}
+            placeholder={t('firstName', 'First Name')}
+            value={firstName}
+            onChangeText={setFirstName}
+            autoCapitalize="words"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={t('lastName', 'Last Name')}
+            value={lastName}
+            onChangeText={setLastName}
+            autoCapitalize="words"
+          />
+          <TextInput
+            style={styles.input}
+            placeholder={t('email', 'Email')}
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+          <CustomDropdown
+            value={sex}
+            onValueChange={handleSexChange}
+            options={genderOptions}
+            placeholder={t('selectSex', 'Select Gender')}
+          />
+          <View style={styles.passwordInputContainer}>
+            <TextInput
+              style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
+              placeholder={t('password')}
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={!showPassword}
+              textContentType="password"
+              autoComplete="password"
+            />
+            <TouchableOpacity
+              style={styles.showHideButtonInside}
+              onPress={togglePasswordVisibility}
+            >
+              <Text style={styles.showHideButtonText}>
+                {showPassword ? t('hide') : t('show')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.passwordInputContainer}>
+            <TextInput
+              style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
+              placeholder={t('confirmPassword')}
+              value={confirmPassword}
+              onChangeText={setConfirmPassword}
+              secureTextEntry={!showConfirmPassword}
+              textContentType="newPassword"
+              autoComplete="password-new"
+            />
+            <TouchableOpacity
+              style={styles.showHideButtonInside}
+              onPress={toggleConfirmPasswordVisibility}
+            >
+              <Text style={styles.showHideButtonText}>
+                {showConfirmPassword ? t('hide') : t('show')}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+        <View style={[
+          styles.buttonContainer,
+          {
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            zIndex: 10,
+            borderColor: COLORS.border,
+            backgroundColor: COLORS.white,
+          },
+        ]}>
+          <SubmitButton
+            onPress={handleSignup}
+            disabled={!isFormValid}
+            loading={signupLoading}
+          >
+            {t('signup', 'Signup')}
+          </SubmitButton>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 });
 
@@ -199,6 +221,11 @@ const styles = StyleSheet.create({
     color: '#f4511e',
     fontWeight: 'bold',
     fontSize: 14,
+  },
+  buttonContainer: {
+    paddingBottom: 20,
+    paddingHorizontal: 20,
+    backgroundColor: COLORS.white,
   },
 });
 
