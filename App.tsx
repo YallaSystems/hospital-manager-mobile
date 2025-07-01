@@ -8,9 +8,8 @@
 import React, { useEffect, useState } from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {Provider} from 'react-redux';
-import {PersistGate} from 'redux-persist/integration/react';
 import AppNavigator from './src/navigation/AppNavigator';
-import {store, persistor} from './src/store';
+import {store} from './src/store';
 import './src/i18n';
 import axiosInstance from './src/axiosInstance';
 import { URLS } from './src/constants/urls';
@@ -30,22 +29,19 @@ function App(): React.JSX.Element {
 
   return (
     <Provider store={store}>
-      {/* PersistGate is used to persist the state to AsyncStorage */}
-      <PersistGate loading={null} persistor={persistor!}>
-        {/* SafeAreaProvider is used to handle the safe area insets */}
-        <SafeAreaProvider>
-          <AuthInitializer>
-            <AppNavigator />
-          </AuthInitializer>
-          <MaintenanceModal
-            visible={isMaintenanceModalVisible}
-            onRetry={() => performHealthCheck(setMaintenanceModalVisible, t)}
-            title={t('healthCheck.maintenanceTitle', 'System Under Maintenance')}
-            message={t('healthCheck.maintenanceMessage', 'We are currently performing maintenance. Please try again later.')}
-            retryButtonText={t('healthCheck.retryButton', 'Retry')}
-          />
-        </SafeAreaProvider>
-      </PersistGate>
+      {/* SafeAreaProvider is used to handle the safe area insets */}
+      <SafeAreaProvider>
+        <AuthInitializer>
+          <AppNavigator />
+        </AuthInitializer>
+        <MaintenanceModal
+          visible={isMaintenanceModalVisible}
+          onRetry={() => performHealthCheck(setMaintenanceModalVisible, t)}
+          title={t('healthCheck.maintenanceTitle', 'System Under Maintenance')}
+          message={t('healthCheck.maintenanceMessage', 'We are currently performing maintenance. Please try again later.')}
+          retryButtonText={t('healthCheck.retryButton', 'Retry')}
+        />
+      </SafeAreaProvider>
     </Provider>
   );
 }
