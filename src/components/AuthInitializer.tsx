@@ -9,12 +9,13 @@ import { setUser } from '../store/slices/userSlice';
 const AuthInitializer: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const dispatch = useDispatch();
   const token = useSelector((state: RootState) => selectAccessToken(state));
-
+  const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
+  
   useEffect(() => {
-    if (token) {
+    if (token && !isAuthenticated) {
       dispatch(loginSuccess());
     }
-  }, [token, dispatch]);
+  }, [token, dispatch, isAuthenticated]);
 
   useEffect(() => {
     const loadUser = async () => {
