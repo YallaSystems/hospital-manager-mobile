@@ -10,6 +10,7 @@ import { setUserFromSignup } from '../store/slices/userSlice';
 import { setAuthForm, clearAuthForm } from '../store/slices/authSlice';
 import { RootState } from '../store';
 import React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 /**
  * A view model hook for the Signup screen.
@@ -149,6 +150,19 @@ export const useSignupViewModel = (navigation: any) => {
       dispatch(setUserFromSignup(response.data));
       dispatch(signupSuccess());
       dispatch(clearAuthForm());
+      // Store user in AsyncStorage
+      const userToStore = {
+        id: response.data.user.id,
+        email: response.data.user.email,
+        firstName: response.data.user.firstName,
+        lastName: response.data.user.lastName,
+        role: response.data.user.role,
+        accessToken: response.data.accessToken,
+        refreshToken: response.data.refreshToken,
+        expiresIn: response.data.expiresIn,
+        expireTimeStamp: new Date(Date.now() + response.data.expiresIn * 60 * 1000).toISOString(),
+      };
+      await AsyncStorage.setItem('user', JSON.stringify(userToStore));
       Alert.alert(
         t('success', 'Success'),
         response.data.message || 'Registration successful'
