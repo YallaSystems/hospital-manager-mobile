@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../../screens/LoginScreen';
 import SignupScreen from '../../screens/SignupScreen';
@@ -16,19 +16,29 @@ const AuthStackNavigator = createNativeStackNavigator<AuthStackParamList>();
 
 const AuthStack = () => {
   const { t } = useTranslation();
+
+  // Memoize screen options to prevent unnecessary re-renders
+  const screenOptions = useMemo(() => ({
+    headerShown: true,
+    headerLeft: ({ navigation }: any) => (
+      <Button title={t('back')} onPress={() => navigation.goBack()} />
+    ),
+  }), [t]);
+
+  // Memoize screen configurations to prevent unnecessary re-renders
+  const screenConfigs = useMemo(() => ({
+    login: { title: t('login') },
+    signup: { title: t('signup') },
+    forgotPassword: { title: t('forgotPassword') },
+    otp: { title: t('otpScreen') },
+  }), [t]);
+
   return (
-    <AuthStackNavigator.Navigator
-      screenOptions={({navigation})=>({
-        headerShown: true,
-        headerLeft: () => (
-          <Button title={t('back')} onPress={() => navigation.goBack()} />
-        ),
-      })}
-    >
-      <AuthStackNavigator.Screen name="Login" component={LoginScreen} options={{ title: t('login') }} />
-      <AuthStackNavigator.Screen name="Signup" component={SignupScreen} options={{ title: t('signup') }} />
-      <AuthStackNavigator.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: t('forgotPassword') }} />
-      <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={{ title: t('otpScreen') }} />
+    <AuthStackNavigator.Navigator screenOptions={screenOptions}>
+      <AuthStackNavigator.Screen name="Login" component={LoginScreen} options={screenConfigs.login} />
+      <AuthStackNavigator.Screen name="Signup" component={SignupScreen} options={screenConfigs.signup} />
+      <AuthStackNavigator.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={screenConfigs.forgotPassword} />
+      <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={screenConfigs.otp} />
     </AuthStackNavigator.Navigator>
   );
 };

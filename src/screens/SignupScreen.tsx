@@ -29,7 +29,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
     confirmPassword,
     setConfirmPassword,
     handleSignup,
-  } = useSignupViewModel(navigation);
+  } = useSignupViewModel(navigation, t);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -63,7 +63,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
         />
         <View style={styles.passwordInputContainer}>
           <TextInput
-            style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
+            style={styles.passwordInput}
             placeholder={t('password')}
             value={password}
             onChangeText={setPassword}
@@ -81,7 +81,7 @@ const SignupScreen = ({ navigation }: SignupScreenProps) => {
         </View>
         <View style={styles.passwordInputContainer}>
           <TextInput
-            style={[styles.input, { paddingRight: 60, marginBottom: 0 }]}
+            style={styles.passwordInput}
             placeholder={t('confirmPassword')}
             value={confirmPassword}
             onChangeText={setConfirmPassword}
@@ -145,6 +145,16 @@ const styles = StyleSheet.create({
   },
   passwordInputContainer: {
     marginBottom: 15,
+  },
+  passwordInput: {
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    paddingRight: 60,
+    marginBottom: 0,
+    fontSize: 16,
   },
   showHideButtonInside: {
     position: 'absolute',

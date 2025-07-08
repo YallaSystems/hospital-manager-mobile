@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import Toast from 'react-native-toast-message';
 import axiosInstance from '../axiosInstance';
 import { URLS } from '../constants/urls';
-import { useTranslation } from 'react-i18next';
 
 /**
  * A view model hook for the Signup screen.
@@ -11,16 +10,16 @@ import { useTranslation } from 'react-i18next';
  * including form fields for full name, email, password, and confirm password.
  *
  * @param navigation - The navigation prop from React Navigation.
+ * @param t - Translation function passed from the component to avoid duplicate useTranslation calls
  * @returns An object containing the state variables, their setters, and the signup handler function.
  */
-export const useSignupViewModel = (navigation: any) => {
+export const useSignupViewModel = (navigation: any, t: (key: string) => string) => {
   const [firstName, setFirstName] = useState('fn');
   const [lastName, setLastName] = useState('ln');
   const [email, setEmail] = useState(`sadi@yalla.systems`);
   const [password, setPassword] = useState('12345678');
   const [confirmPassword, setConfirmPassword] = useState('12345678');
   const dispatch = useDispatch();
-  const { t } = useTranslation();
 
   /**
    * Handles the signup process.
