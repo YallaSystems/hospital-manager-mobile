@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginRequest } from '../store/slices/authSlice';
 import type { RootState } from '../store';
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import type { RootStackParamList } from '../navigation/AppNavigator';
+import { PATHS } from '../constants/paths';
 
 // TODO: The navigation prop is temporarily typed as `any` to avoid a type mismatch
 // that occurs due to the nested navigation structure. When the `LoginScreen` was moved
@@ -22,7 +20,7 @@ export const useLoginViewModel = (
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigation.replace('Main');
+      navigation.replace(PATHS.Main);
     }
   }, [isAuthenticated, navigation]);
 
@@ -31,7 +29,7 @@ export const useLoginViewModel = (
    * This allows the OTP screen to perform the login action after successful verification.
    */
   const handleLogin = () => {
-    navigation.navigate('Otp', { email, password });
+    navigation.navigate(PATHS.AUTH.OTP, { email, password });
   };
 
   return {

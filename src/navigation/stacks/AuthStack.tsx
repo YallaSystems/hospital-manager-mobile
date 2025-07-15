@@ -21,14 +21,14 @@ const AuthStack = () => {
       screenOptions={({navigation})=>({
         headerShown: true,
         headerLeft: () => (
-          <Button title={t('back')} onPress={() => navigation.goBack()} />
+          <Button title={t('back', 'Back')} onPress={() => navigation.goBack()} />
         ),
       })}
     >
-      <AuthStackNavigator.Screen name="Login" component={LoginScreen} options={{ title: t('login') }} />
-      <AuthStackNavigator.Screen name="Signup" component={SignupScreen} options={{ title: t('signup') }} />
-      <AuthStackNavigator.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: t('forgotPassword') }} />
-      <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={{ title: t('otpScreen') }} />
+      <AuthStackNavigator.Screen name="Login" component={LoginScreen} options={{ title: t('login', 'Login') }} />
+      <AuthStackNavigator.Screen name="Signup" component={SignupScreen} options={{ title: t('signup', 'Signup') }} />
+      <AuthStackNavigator.Screen name="ForgotPassword" component={ForgotPasswordScreen} options={{ title: t('forgotPassword', 'Forgot Password?') }} />
+      <AuthStackNavigator.Screen name="Otp" component={OtpScreen} options={{ title: t('otpScreen', 'OTP Verification') }} />
     </AuthStackNavigator.Navigator>
   );
 };

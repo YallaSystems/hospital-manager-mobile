@@ -6,7 +6,7 @@ const AppointmentsScreen = () => {
   const { t } = useTranslation();
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{t('appointments')}</Text>
+      <Text>{t('appointments', 'Appointments')}</Text>
     </View>
   );
 };

@@ -29,9 +29,9 @@ describe('LoginScreen', () => {
     jest.clearAllMocks();
     // Mocks the return value of the useLoginViewModel hook to provide controlled data for tests.
     useLoginViewModel.mockReturnValue({
-      email: '',
+      email: 'test@example.com',
       setEmail: mockSetEmail,
-      password: '',
+      password: 'password123',
       setPassword: mockSetPassword,
       loading: false,
       error: null,

@@ -27,7 +27,7 @@ For iOS, you need to install the CocoaPods dependencies.
 
 ```bash
 cd ios
-pod install
+pod install --repo-update
 cd ..
 ```
 

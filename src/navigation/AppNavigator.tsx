@@ -1,7 +1,6 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useTranslation } from 'react-i18next';
 import { NavigatorScreenParams } from '@react-navigation/native';
 import AuthStack from './stacks/AuthStack';
 import MainTabs from './stacks/MainTabs';
@@ -38,7 +37,6 @@ export type RootStackParamList = {
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const AppNavigator = () => {
-  const { t } = useTranslation();
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={'Main'}>

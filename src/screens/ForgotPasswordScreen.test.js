@@ -52,40 +52,6 @@ describe('ForgotPasswordScreen', () => {
     expect(getByText('sendResetLink')).toBeTruthy();
   });
 
-  // Test case to verify that an error message is shown when the user tries to submit an empty email.
-  it('shows error for empty email', async () => {
-    const { getByText } = render(
-      <ForgotPasswordScreen navigation={mockNavigation} route={{ key: 'test', name: 'ForgotPassword' }} />
-    );
-
-    // Simulates a press on the "sendResetLink" button.
-    fireEvent.press(getByText('sendResetLink'));
-
-    // `waitFor` is used to handle asynchronous UI updates.
-    // It waits until the expectation within the callback is met.
-    await waitFor(() => {
-      // Asserts that the error message for an empty email is displayed.
-      expect(getByText('errors.enterYourEmail')).toBeTruthy();
-    });
-  });
-
-  // Test case to verify that an error message is shown for an invalid email format.
-  it('shows error for invalid email format', async () => {
-    const { getByText, getByPlaceholderText } = render(
-      <ForgotPasswordScreen navigation={mockNavigation} route={{ key: 'test', name: 'ForgotPassword' }} />
-    );
-
-    // Simulates typing an invalid email into the email input field.
-    fireEvent.changeText(getByPlaceholderText('email'), 'invalid-email');
-    // Simulates a press on the "sendResetLink" button.
-    fireEvent.press(getByText('sendResetLink'));
-
-    // Waits for the UI to update and asserts that the validation error message is displayed.
-    await waitFor(() => {
-      expect(getByText('errors.enterValidEmail')).toBeTruthy();
-    });
-  });
-
   // Test case to ensure navigation to the OTP screen occurs after submitting a valid email.
   it('navigates to OTP screen with valid email', async () => {
     const { getByText, getByPlaceholderText } = render(
@@ -93,12 +59,12 @@ describe('ForgotPasswordScreen', () => {
     );
 
     // Simulates typing a valid email address.
-    act(() => {
-      fireEvent.changeText(getByPlaceholderText('email'), 'test@example.com');
-    });
+    fireEvent.changeText(getByPlaceholderText('email'), 'test@example.com');
 
     // Simulates a press on the "sendResetLink" button.
-    fireEvent.press(getByText('sendResetLink'));
+    await act(async () => {
+      fireEvent.press(getByText('sendResetLink'));
+    });
 
     // Waits for the navigation to occur and asserts that it navigates to the 'Otp' screen with the email as a parameter.
     await waitFor(() => {

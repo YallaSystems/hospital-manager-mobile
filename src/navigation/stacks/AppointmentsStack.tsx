@@ -16,7 +16,7 @@ const AppointmentsStack = () => {
         component={AppointmentsScreen}
         options={({ navigation }) => ({
           headerShown: true,
-          title: t('appointments'),
+          title: t('appointments', 'Appointments'),
           headerRight: () => <HeaderAuthButton navigation={navigation} />,
         })}
       />

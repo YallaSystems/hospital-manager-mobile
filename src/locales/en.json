@@ -35,13 +35,21 @@
     "enterValidEmail": "Please enter a valid email address",
     "failedToSendResetLink": "Failed to send reset link. Please try again.",
     "passwordTooShort": "Password must be at least 8 characters long",
-    "passwordsDoNotMatch": "Passwords do not match"
+    "passwordsDoNotMatch": "Passwords do not match",
+    "enterFirstName": "Please enter your first name",
+    "enterLastName": "Please enter your last name",
+    "selectSex": "Please select your gender"
   },
   "healthCheck": {
     "maintenanceTitle": "System Under Maintenance",
     "maintenanceMessage": "We are currently performing maintenance. Please try again later.",
     "retryButton": "Retry",
-    "failedToastTitle": "Error",
-    "failedToastMessage": "Health check failed"
-  }
+    "failedTitle": "Error",
+    "failedMessage": "Health check failed"
+  },
+  "selectSex": "Select Gender",
+  "male": "Male",
+  "female": "Female",
+  "gender": "Gender",
+  "missingData": "Missing Data"
 }
